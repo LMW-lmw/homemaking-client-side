@@ -9,14 +9,12 @@ const LmwRequest = new LmwAxios({
       return config
     },
     requestInterceptorCatch: (error) => {
-      console.log('请求错误拦截')
       return error
     },
     responseInterceptor: (res) => {
       return res.data
     },
     responseInterceptorCatch: (error) => {
-      console.log('响应错误拦截')
       return error
     }
   }
