@@ -5,6 +5,7 @@ import { IAccount } from '@/service/login/type'
 import { login, getUserInfo, getMenus } from '@/service/login/login'
 import router from '@/router/index'
 import storage from '@/utils/storage'
+import { mapRouter } from '@/utils/map-menu'
 const loginModule: Module<ILogin, IRootState> = {
   namespaced: true,
   state: {
@@ -18,7 +19,6 @@ const loginModule: Module<ILogin, IRootState> = {
       const { id, token } = loginResult
       storage.setItem('token', token, false)
       commit('changeToken', token)
-      console.log(id)
       const userInfo = await getUserInfo(id)
       storage.setItem('userInfo', userInfo, false)
       commit('changeUserInfo', userInfo)
@@ -27,19 +27,6 @@ const loginModule: Module<ILogin, IRootState> = {
       commit('changeMenus', menus)
       router.push('/main')
     },
-    // async accountLogin({ commit }, payload: IAccount) {
-    //   const loginResult = await login(payload)
-    //   const { id, token } = loginResult
-    //   storage.setItem('token', token)
-    //   commit('changeToken', token)
-    //   const userInfo = await getUserInfo(id)
-    //   storage.setItem('userInfo', userInfo)
-    //   commit('changeUserInfo', userInfo)
-    //   const menus = await getMenus(userInfo.role.id)
-    //   storage.setItem('menus', menus)
-    //   commit('changeMenus', menus)
-    //   router.push('/main')
-    // },
     init({ commit }) {
       const token = storage.getItem('token', false)
       const userInfo = storage.getItem('userInfo', false)
@@ -64,6 +51,12 @@ const loginModule: Module<ILogin, IRootState> = {
     },
     changeMenus(state, menus) {
       state.menus = menus
+      // console.log(menus)
+      const routes = mapRouter(menus)
+      // console.log(routes)
+      routes.forEach((route) => {
+        router.addRoute('main', route)
+      })
     }
   }
 }

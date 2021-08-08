@@ -1,52 +1,39 @@
 <template>
   <div class="sidebar">
     <div class="title">
-      <img src="../../assets/img/mainlogo.png" />
-      <div class="name">
-        <span class="user">{{ userInfo.name }}</span>
-        <div class="day">{{ nowDay }}</div>
+      <h3>{{ userInfo.name }}</h3>
+      <i class="el-icon-bell icon"></i>
+    </div>
+    <div class="items" v-for="(menu, index) in menus" :key="menu.id">
+      <div class="main-side" @click="changeShow(index)" :ref="mainSide">
+        <sider-item :icon="menu.icon" :text="menu.name">
+          <template #icon>
+            <i class="el-icon-arrow-down down-or-up" :ref="iconRef"></i>
+          </template>
+        </sider-item>
       </div>
-    </div>
-    <div>
-      <sider-item></sider-item>
-      <child />
-      <child />
-    </div>
-    <div>
-      <sider-item></sider-item>
-      <child />
-    </div>
-    <div>
-      <sider-item></sider-item>
-      <child />
-    </div>
-    <!-- <div v-for="(menu, index) in menus" :key="menu.id" style="overflow: hidden">
-      <siderItem
-        :icon="menu.icon"
-        :text="menu.name"
-        @click="itemClick(index, $event)"
-        :isActive="index === nowItem"
-      >
-      </siderItem>
-      <div class="items" v-if="menu.children">
-        <template v-for="children in menu.children" :key="children.id">
-          <div class="children">
-            <i class="el-icon-right right"></i>
-            <span>{{ children.name }}</span>
+      <div class="child" :ref="bindChild" style="height: 0px">
+        <div class="bind-heigh" :ref="bindHeith">
+          <div v-for="(child, childIndex) in menu.children" :key="child.id">
+            <child
+              :text="child.name"
+              :childActive="path === child.url"
+              @click="changeChild(childIndex, child.url)"
+            ></child>
           </div>
-        </template>
+        </div>
       </div>
-    </div> -->
+    </div>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from 'vue'
+import { defineComponent, onBeforeUpdate, computed } from 'vue'
+import { useRouter, useRoute } from 'vue-router'
 import siderItem from './siderItem.vue'
 import storage from '@/utils/storage'
 import { useState } from '@/utils/vuexUtil'
 import child from './itemChild.vue'
-// import { slide } from '@/hook/sider'
 export default defineComponent({
   name: 'siderbar',
   components: {
@@ -54,50 +41,58 @@ export default defineComponent({
     child
   },
   setup() {
-    let now: any = new Date()
-    let week = now.getDay()
-    let nowDay = ref('')
-    let nowItem = ref(0)
-    let sider = []
-    switch (week) {
-      case 1:
-        nowDay.value = 'Monday'
-        break
-      case 2:
-        nowDay.value = 'Tuesday'
-        break
-      case 3:
-        nowDay.value = 'Wednesday'
-        break
-      case 4:
-        nowDay.value = 'Thursday'
-        break
-      case 5:
-        nowDay.value = 'Friday'
-        break
-      case 6:
-        nowDay.value = 'Saturday'
-        break
-      case 7:
-        nowDay.value = 'Sunday'
-        break
-    }
+    const router = useRouter()
+    const route = useRoute()
     let menus = storage.getItem('menus', false)
-    const siderRef = (event: any) => {
-      sider.push(event)
-    }
-    let itemClick = (index: any) => {
-      nowItem.value = index
-      // slide(event)
-    }
     let userInfo = useState(['userInfo'], 'login')
+    let childHeigh: any = []
+    let child: any = []
+    let side: any = []
+    let icon: any = []
+    const bindHeith = (event: any) => {
+      childHeigh.push(event)
+    }
+    const bindChild = (event: any) => {
+      child.push(event)
+    }
+    const mainSide = (event: any) => {
+      side.push(event)
+    }
+    const iconRef = (event: any) => {
+      icon.push(event)
+    }
+    const changeShow = (index: number) => {
+      if (child[index].style.height === '0px') {
+        child[index].style.height = childHeigh[index].offsetHeight + 'px'
+        side[index].className += ' active'
+        icon[index].className += ' iconActive'
+      } else {
+        child[index].style.height = '0px'
+        side[index].className = 'main-side'
+        icon[index].className += 'el-icon-arrow-down down-or-up'
+      }
+    }
+    // 获取当前路由路径  这里用于判断child的活跃状态以便添加class
+    const path = computed(() => route.path)
+    const changeChild = (index: number, url: string) => {
+      router.push(url)
+    }
+    onBeforeUpdate(() => {
+      childHeigh = []
+      child = []
+      side = []
+      icon = []
+    })
     return {
-      nowDay,
       menus,
-      itemClick,
-      nowItem,
-      siderRef,
-      ...userInfo
+      bindHeith,
+      bindChild,
+      changeShow,
+      mainSide,
+      iconRef,
+      changeChild,
+      ...userInfo,
+      path
     }
   }
 })
@@ -105,57 +100,48 @@ export default defineComponent({
 
 <style scoped lang="less">
 .sidebar {
-  width: 210px;
+  width: 380px;
   height: 100%;
-  border-radius: 30px 30px 0px 0px;
-  background: #ffffff;
-  box-shadow: 5px 5px 44px #d9d9d9, -5px -5px 44px #ffffff;
-  padding: 25px 20px 25px 20px;
+  background: #141922;
+  color: #dce2ec;
+  overflow: scroll;
+  padding-right: 20px;
+  z-index: 1;
 }
 .title {
-  margin-top: 20px;
-  margin-bottom: 40px;
-  height: 55px;
+  height: 50px;
   display: flex;
   align-items: center;
-  border: 1px solid #f5f5f5;
-  border-radius: 10px;
-  padding-left: 5px;
-  img {
-    width: 40px;
-    height: 40px;
-    border-radius: 15px;
-  }
-  .name {
-    display: flex;
-    flex-direction: column;
-    margin-left: 10px;
-    .user {
-      font-size: 14px;
-      margin-bottom: 3px;
-    }
-    .day {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      height: 20px;
-      font-size: 14px;
-      color: white;
-      border-radius: 5px;
-      padding: 0px 3px 0px 3px;
-      background-color: #65d7cc;
-    }
-  }
-}
-.children {
-  height: 25px;
+  margin: 20px 0px 80px 30px;
   display: flex;
+  justify-content: space-between;
   align-items: center;
-  transition: all;
+  padding-right: 40px;
+  .icon {
+    position: relative;
+    top: 3px;
+    font-size: 16px;
+  }
 }
-.right {
-  margin-left: 13px;
-  margin-right: 12px;
-  font-size: 14px;
+.child {
+  overflow: hidden;
+  transition: height 500ms;
+}
+.main-side {
+  border-left: 5px solid #151921;
+}
+.active {
+  border-color: #4679cb;
+  background-image: linear-gradient(
+    to right,
+    rgba(19, 31, 53, 0.8),
+    rgba(19, 25, 34, 0.8)
+  );
+}
+.down-or-up {
+  transition: all 500ms;
+}
+.iconActive {
+  transform: rotate(180deg);
 }
 </style>

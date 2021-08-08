@@ -34,7 +34,7 @@ export function getMenus(id: number) {
               item.icon = 'icon-shangpin'
             }
             if (item.id == 41) {
-              item.icon = 'icon-zu35055'
+              item.icon = 'icon-icon-say'
             }
           })
         }

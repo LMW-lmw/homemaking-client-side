@@ -10,6 +10,8 @@ import store, { setupStore } from './store/index'
 
 import { registerApp } from './global/index'
 import { directive } from './global/directive/index'
+
+// import { mapRouter } from './utils/map-menu'
 const app = createApp(App)
 directive(app)
 registerApp(app)

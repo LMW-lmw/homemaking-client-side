@@ -1,7 +1,7 @@
 <template>
-  <div class="child">
+  <div class="child" :class="{ childActive: childActive }">
     <i class="el-icon-right right"></i>
-    <span> child </span>
+    <span>{{ text }}</span>
   </div>
 </template>
 
@@ -9,6 +9,16 @@
 import { defineComponent } from 'vue'
 
 export default defineComponent({
+  props: {
+    text: {
+      type: String,
+      default: 'null'
+    },
+    childActive: {
+      type: Boolean,
+      default: false
+    }
+  },
   setup() {
     return {}
   }
@@ -17,20 +27,21 @@ export default defineComponent({
 
 <style scoped lang="less">
 .child {
-  width: 210px;
-  height: 40px;
+  height: 50px;
   display: flex;
   align-items: center;
   cursor: pointer;
-  border-radius: 10px;
-  margin-bottom: 16px;
+  margin-left: 28px;
 }
 .child:hover {
-  color: #4f6a9d;
+  color: #4679cb;
+}
+.childActive {
+  color: #4679cb;
 }
 .right {
   margin-left: 13px;
-  margin-right: 16px;
+  margin-right: 28px;
   font-size: 14px;
 }
 </style>
