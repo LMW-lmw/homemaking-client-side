@@ -24,18 +24,6 @@ const routes: RouteRecordRaw[] = [
     path: '/main',
     name: 'main',
     component: () => import('../views/main/main.vue')
-    // children: [
-    //   {
-    //     path: 'analysis/overview',
-    //     name: 'overview',
-    //     component: () => import('@/view/main/analysis/overview/overview.vue')
-    //   },
-    //   {
-    //     path: 'system/user',
-    //     name: 'user',
-    //     component: () => import('@/view/main/system/user/user.vue')
-    //   }
-    // ]
   }
 ]
 const router = createRouter({
