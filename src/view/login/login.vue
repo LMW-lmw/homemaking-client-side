@@ -30,25 +30,43 @@
             />
             <span data-placeholder="Password"></span>
           </div>
-          <input type="submit" value="Login" class="button" />
+          <input type="submit" value="登录" class="button" />
         </form>
+        <p class="remeber">
+          <input type="checkbox" id="check" ref="check" />
+          <label for="check">
+            <span>记住密码</span>
+          </label>
+        </p>
       </div>
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, reactive } from 'vue'
-import send from '../../service/index'
+import { defineComponent, ref, reactive, onMounted } from 'vue'
+import { useStore } from 'vuex'
+import storage from '@/utils/storage'
+// import send from '../../service/index'
 export default defineComponent({
   components: {},
   setup() {
+    let store = useStore()
     let UserIsActive = ref(false)
     let passworIsActive = ref(false)
+    let check = ref<any>()
     let user = reactive({
-      userName: '',
-      passWord: ''
+      userName: storage.getItem('info', false)
+        ? storage.getItem('info', false).account
+        : '',
+      passWord: storage.getItem('info', false)
+        ? storage.getItem('info', false).password
+        : '',
+      check: storage.getItem('info', false)
+        ? storage.getItem('info', false).check
+        : false
     })
+
     const userActive = () => {
       UserIsActive.value = !UserIsActive.value
       if (user.userName !== '') {
@@ -63,28 +81,40 @@ export default defineComponent({
     }
     const toSubmit = (e: any) => {
       e.preventDefault()
-      interface login {
-        token: string
+      if (check.value.checked) {
+        let info = {
+          account: user.userName,
+          password: user.passWord,
+          check: true
+        }
+        storage.setItem('info', info, false)
+      } else {
+        storage.clear()
       }
-      send
-        .post<login>({
-          url: 'login',
-          data: {
-            name: user.userName,
-            password: user.passWord
-          }
-        })
-        .then((res) => {
-          console.log(res)
-        })
+      store.dispatch('login/accountLogin', {
+        name: user.userName,
+        password: user.passWord
+      })
     }
+    onMounted(() => {
+      if (user.userName !== '') {
+        UserIsActive.value = true
+      }
+      if (user.passWord !== '') {
+        passworIsActive.value = true
+      }
+      if (user.check) {
+        check.value.checked = true
+      }
+    })
     return {
       userActive,
       passActive,
       UserIsActive,
       passworIsActive,
       user,
-      toSubmit
+      toSubmit,
+      check
     }
   }
 })
@@ -109,41 +139,37 @@ export default defineComponent({
   border-bottom: 2px solid #adadad;
   position: relative;
   margin: 30px 0;
+  input {
+    font-size: 15px;
+    color: #333;
+    border: none;
+    width: 100%;
+    outline: none;
+    background: none;
+    padding: 0 5px;
+    height: 40px;
+  }
+  span::before {
+    content: attr(data-placeholder);
+    position: absolute;
+    top: 50%;
+    left: 5px;
+    color: #adadad;
+    transform: translateY(-50%);
+    z-index: -1;
+    transition: 0.5s;
+  }
+  span::after {
+    content: '';
+    position: absolute;
+    left: 0%;
+    top: 100%;
+    width: 0%;
+    height: 2px;
+    background: linear-gradient(120deg, #3498db, #8e44ad);
+    transition: 0.5s;
+  }
 }
-
-.inputText input {
-  font-size: 15px;
-  color: #333;
-  border: none;
-  width: 100%;
-  outline: none;
-  background: none;
-  padding: 0 5px;
-  height: 40px;
-}
-
-.inputText span::before {
-  content: attr(data-placeholder);
-  position: absolute;
-  top: 50%;
-  left: 5px;
-  color: #adadad;
-  transform: translateY(-50%);
-  z-index: -1;
-  transition: 0.5s;
-}
-
-.inputText span::after {
-  content: '';
-  position: absolute;
-  left: 0%;
-  top: 100%;
-  width: 0%;
-  height: 2px;
-  background: linear-gradient(120deg, #3498db, #8e44ad);
-  transition: 0.5s;
-}
-
 .focus + span::before {
   top: -5px;
 }
@@ -165,7 +191,7 @@ export default defineComponent({
 }
 
 .button {
-  font-size: 20px;
+  font-size: 18px;
   color: #596275;
   box-shadow: 9px 9px 18px rgba(0, 0, 0, 0.1),
     -9px -9px 18px rgba(255, 255, 255, 1);
@@ -173,7 +199,7 @@ export default defineComponent({
   transition: box-shadow 0.2s ease-out;
   background-color: #efeeee;
   position: relative;
-  top: 80px;
+  top: 100px;
   margin-top: 20px;
   width: 130px;
   height: 55px;
@@ -183,12 +209,13 @@ export default defineComponent({
 }
 
 .button:hover {
-  font-size: 19px;
+  font-size: 16px;
   box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2),
     -1px -1px 2px rgba(255, 255, 255, 0.8);
   border-radius: 3rem;
   transition: box-shadow 0.2s ease-out;
   transition: font-size 0.2s ease-out;
+  cursor: pointer;
 }
 
 .card {
@@ -200,21 +227,43 @@ export default defineComponent({
   width: 340px;
   z-index: 1;
   transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  .front {
+    position: absolute;
+    text-align: center;
+    box-shadow: 12px 12px 24px rgba(0, 0, 0, 0.1),
+      -12px -12px 24px rgba(255, 255, 255, 1);
+    border-radius: 3rem;
+    background-color: #efeeee;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    transition: 1s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    z-index: 1;
+  }
 }
-.card .front {
-  position: absolute;
-  text-align: center;
-  box-shadow: 12px 12px 24px rgba(0, 0, 0, 0.1),
-    -12px -12px 24px rgba(255, 255, 255, 1);
-  border-radius: 3rem;
-  background-color: #efeeee;
-  width: 100%;
-  height: 100%;
+.remeber {
+  position: relative;
+  bottom: 20px;
+  left: 50px;
+  height: 16px;
   display: flex;
-  flex-direction: column;
-  transition: 1s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  align-items: center;
+  text-align: left;
+  font-size: 14px;
+  color: skyblue;
+  cursor: pointer;
+  label {
+    cursor: pointer;
+    span {
+      cursor: pointer;
+    }
+  }
 }
-.card .front {
-  z-index: 1;
+#check {
+  height: 14px;
+  width: 14px;
+  margin-right: 5px;
+  cursor: pointer;
 }
 </style>

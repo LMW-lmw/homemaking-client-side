@@ -1,11 +1,12 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import type { RouteRecordRaw } from 'vue-router'
 import error from '../view/error/404.vue'
+import storage from '@/utils/storage'
 
 const routes: RouteRecordRaw[] = [
   {
     path: '/',
-    redirect: '/login'
+    redirect: '/main'
   },
   {
     path: '/:pathMatch(.*)',
@@ -27,5 +28,12 @@ const router = createRouter({
   routes,
   history: createWebHistory()
 })
-
+router.beforeEach((to) => {
+  if (to.path !== '/login') {
+    const token = storage.getItem('token', false) || storage.getItem('token')
+    if (!token) {
+      return '/login'
+    }
+  }
+})
 export default router
