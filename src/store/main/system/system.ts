@@ -1,0 +1,126 @@
+import { Module } from 'vuex'
+import { ISystem } from './type'
+import { IRootState } from '@/store/type'
+import {
+  createData,
+  deletData,
+  editData,
+  getPageListData
+} from '@/service/main/system/system'
+const systemModule: Module<ISystem, IRootState> = {
+  namespaced: true,
+  state() {
+    return {
+      usersList: [],
+      usersCount: 0,
+      roleList: [],
+      roleCount: 0,
+      goodsList: [],
+      gootsCount: 0,
+      menuList: [],
+      departmentList: [],
+      departmentCount: 0,
+      categoryList: [],
+      categoryCount: 0
+    }
+  },
+  mutations: {
+    changeUsersList(state, list: any[]) {
+      state.usersList = list
+    },
+    changeUsersCount(state, count: number) {
+      state.usersCount = count
+    },
+    changeRoleList(state, list: any[]) {
+      state.roleList = list
+    },
+    changeRoleCount(state, count: number) {
+      state.roleCount = count
+    },
+    changeGoodsList(state, list: any[]) {
+      state.goodsList = list
+    },
+    changeGoodsCount(state, count: number) {
+      state.goodsCount = count
+    },
+    changeMenuList(state, list: any[]) {
+      state.menuList = list
+    },
+    changeDepartmentList(state, list: any[]) {
+      state.departmentList = list
+    },
+    changeDepartmentCount(state, count: number) {
+      state.departmentCount = count
+    },
+    changeCategoryList(state, list: any[]) {
+      state.categoryList = list
+    },
+    changeCategoryCount(state, count: number) {
+      state.categoryCount = count
+    }
+  },
+  getters: {
+    pageListData(state) {
+      return (pageName: string) => {
+        return (state as any)[`${pageName.toLowerCase()}List`]
+      }
+    },
+    listCount(state) {
+      return (pageName: string) => {
+        return (state as any)[`${pageName.toLowerCase()}Count`]
+      }
+    }
+  },
+  actions: {
+    async getList({ commit }, payload: any) {
+      // 获取数据
+      const pageName = payload.pageName
+      const url = `${pageName.toLowerCase()}/list`
+      const pageData = await getPageListData(url, payload.queryInfo)
+      const { list, totalCount } = pageData
+      commit(`change${pageName}List`, list)
+      if (pageName !== 'Menu') {
+        commit(`change${pageName}Count`, totalCount)
+      }
+    },
+    async deletDataAction(context, payload: any) {
+      // 删除数据
+      const { id, pageName, searchData } = payload
+      const name = pageName.toLowerCase()
+      const url = `/${name}/${id}`
+      await deletData(url)
+      context.dispatch('getList', {
+        pageName,
+        queryInfo: searchData
+      })
+    },
+    async createDataAction(context, payload: any) {
+      // 添加数据
+      const { pageName, newData } = payload
+      const url = `/${pageName.toLowerCase()}`
+      await createData(url, newData)
+      context.dispatch('getList', {
+        pageName,
+        queryInfo: {
+          offset: 0,
+          size: 10
+        }
+      })
+    },
+    async editDataAction(context, payload: any) {
+      // 编辑数据
+      const { pageName, editInfo, id } = payload
+      const url = `/${pageName.toLowerCase()}/${id}`
+      await editData(url, editInfo)
+      context.dispatch('getList', {
+        pageName,
+        queryInfo: {
+          offset: 0,
+          size: 10
+        }
+      })
+    }
+  }
+}
+
+export default systemModule

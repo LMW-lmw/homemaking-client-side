@@ -1,11 +1,16 @@
 <template>
   <div class="sidebar">
     <div class="title">
-      <h3>{{ userInfo.name }}</h3>
+      <h3>{{ userName }}</h3>
       <i class="el-icon-bell icon"></i>
     </div>
     <div class="items" v-for="(menu, index) in menus" :key="menu.id">
-      <div class="main-side" @click="changeShow(index)" :ref="mainSide">
+      <div
+        class="main-side"
+        @click="changeShow(index)"
+        :ref="mainSide"
+        :data-url="menu.url"
+      >
         <sider-item :icon="menu.icon" :text="menu.name">
           <template #icon>
             <i class="el-icon-arrow-down down-or-up" :ref="iconRef"></i>
@@ -28,11 +33,10 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, onBeforeUpdate, computed } from 'vue'
+import { defineComponent, onBeforeUpdate, computed, onMounted } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import siderItem from './siderItem.vue'
-import storage from '@/utils/storage'
-import { useState } from '@/utils/vuexUtil'
+import { hideSide, showSide, showOneSide } from '@/hook/siderHook'
 import child from './itemChild.vue'
 export default defineComponent({
   name: 'siderbar',
@@ -40,11 +44,10 @@ export default defineComponent({
     siderItem,
     child
   },
+  props: { menus: { type: Array }, userName: { type: String } },
   setup() {
     const router = useRouter()
     const route = useRoute()
-    let menus = storage.getItem('menus', false)
-    let userInfo = useState(['userInfo'], 'login')
     let childHeigh: any = []
     let child: any = []
     let side: any = []
@@ -63,13 +66,9 @@ export default defineComponent({
     }
     const changeShow = (index: number) => {
       if (child[index].style.height === '0px') {
-        child[index].style.height = childHeigh[index].offsetHeight + 'px'
-        side[index].className += ' active'
-        icon[index].className += ' iconActive'
+        showSide(child, childHeigh, side, icon, index)
       } else {
-        child[index].style.height = '0px'
-        side[index].className = 'main-side'
-        icon[index].className += 'el-icon-arrow-down down-or-up'
+        hideSide(child, side, icon, index)
       }
     }
     // 获取当前路由路径  这里用于判断child的活跃状态以便添加class
@@ -77,6 +76,13 @@ export default defineComponent({
     const changeChild = (index: number, url: string) => {
       router.push(url)
     }
+    onMounted(() => {
+      side.forEach((item: any, index: number) => {
+        if (route.path.indexOf(item.dataset.url) != -1) {
+          showOneSide(child, childHeigh, item, icon, index)
+        }
+      })
+    })
     onBeforeUpdate(() => {
       childHeigh = []
       child = []
@@ -84,14 +90,12 @@ export default defineComponent({
       icon = []
     })
     return {
-      menus,
       bindHeith,
       bindChild,
       changeShow,
       mainSide,
       iconRef,
       changeChild,
-      ...userInfo,
       path
     }
   }
@@ -100,13 +104,16 @@ export default defineComponent({
 
 <style scoped lang="less">
 .sidebar {
-  width: 380px;
+  width: 230px;
   height: 100%;
   background: #141922;
   color: #dce2ec;
   overflow: scroll;
   padding-right: 20px;
   z-index: 1;
+}
+.sidebar::-webkit-scrollbar {
+  display: none;
 }
 .title {
   height: 50px;

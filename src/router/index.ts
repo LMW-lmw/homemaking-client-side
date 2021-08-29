@@ -3,7 +3,7 @@ import type { RouteRecordRaw } from 'vue-router'
 import error from '../views/error/404.vue'
 import storage from '@/utils/storage'
 // import store from '@/store'
-// import { mapRouter } from '@/utils/map-menu'
+import { firstMenu } from '@/utils/map-menu'
 
 const routes: RouteRecordRaw[] = [
   {
@@ -36,6 +36,9 @@ router.beforeEach((to) => {
     if (!token) {
       return '/login'
     }
+  }
+  if (to.path == '/main') {
+    return firstMenu.url
   }
   // userMenus => routes
   // const userMenus = (store.state as any).login.menus

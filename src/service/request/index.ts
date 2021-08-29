@@ -1,18 +1,8 @@
 import axios from 'axios'
-import type { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios'
+import type { AxiosInstance } from 'axios'
 import { ElLoading } from 'element-plus'
 import { ILoadingInstance } from 'element-plus/lib/el-loading/src/loading.type'
-interface LmwInterceptors<T = AxiosResponse> {
-  requestInterceptor?: (config: AxiosRequestConfig) => AxiosRequestConfig
-  requestInterceptorCatch?: (error: any) => any
-  responseInterceptor?: (res: T) => T
-  responseInterceptorCatch?: (error: any) => any
-}
-
-interface LmwRequestConfig<T = AxiosResponse> extends AxiosRequestConfig {
-  interceptors?: LmwInterceptors<T>
-  showLoading?: boolean
-}
+import { LmwInterceptors, LmwRequestConfig } from './type'
 
 class LmwAxios {
   instance: AxiosInstance
@@ -56,11 +46,14 @@ class LmwAxios {
       },
       (error) => {
         this.loading?.close()
+        if (error.response.status === 404) {
+          console.log('404的错误~')
+        }
         return error
       }
     )
   }
-  request<T>(config: LmwRequestConfig<T>): Promise<T> {
+  request<T = any>(config: LmwRequestConfig<T>): Promise<T> {
     return new Promise((resolve, reject) => {
       if (config.interceptors?.requestInterceptor) {
         config = config.interceptors.requestInterceptor(config)
@@ -74,8 +67,8 @@ class LmwAxios {
           if (config.interceptors?.responseInterceptor) {
             res = config.interceptors.responseInterceptor(res)
           }
-          resolve(res)
           this.showLoading = true
+          resolve(res)
         })
         .catch((err) => {
           this.showLoading = true
@@ -84,16 +77,16 @@ class LmwAxios {
         })
     })
   }
-  get<T>(config: LmwRequestConfig<T>): Promise<T> {
+  get<T = any>(config: LmwRequestConfig<T>): Promise<T> {
     return this.request<T>({ ...config, method: 'GET' })
   }
-  post<T>(config: LmwRequestConfig<T>): Promise<T> {
+  post<T = any>(config: LmwRequestConfig<T>): Promise<T> {
     return this.request<T>({ ...config, method: 'POST' })
   }
-  delete<T>(config: LmwRequestConfig<T>): Promise<T> {
+  delete<T = any>(config: LmwRequestConfig<T>): Promise<T> {
     return this.request<T>({ ...config, method: 'DELETE' })
   }
-  pach<T>(config: LmwRequestConfig<T>): Promise<T> {
+  patch<T = any>(config: LmwRequestConfig<T>): Promise<T> {
     return this.request<T>({ ...config, method: 'PATCH' })
   }
 }

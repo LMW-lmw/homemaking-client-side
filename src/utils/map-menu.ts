@@ -1,4 +1,6 @@
 import { RouteRecordRaw } from 'vue-router'
+import { IBreadcrumb } from '@/components/breadcrumb/type/breadcrumb'
+let firstMenu: any = null
 
 export function mapRouter(menus: any[]): RouteRecordRaw[] {
   const routers: RouteRecordRaw[] = []
@@ -17,67 +19,61 @@ export function mapRouter(menus: any[]): RouteRecordRaw[] {
         if (route) {
           routers.push(route)
         }
+        if (!firstMenu) {
+          firstMenu = menu
+        }
       } else {
         getRoute(menu.children)
       }
     }
   }
-  // const getRoute = (menus: any) => {
-  //   for (const menu of menus) {
-  //     if (menu.type === 2) {
-  //       const route = allRouter.find((route) => route.path === menu.url)
-  //       if (route) routers.push(route)
-  //     } else {
-  //       getRoute(menu.children)
-  //     }
-  //   }
-  // }
   getRoute(menus)
   return routers
 }
 
-// export function mapMenusToRoutes(userMenus: any[]): RouteRecordRaw[] {
-//   const routes: RouteRecordRaw[] = []
+export function getBreadMenu(userMenus: any[], currentPath: string): any {
+  const breadcrumbs: IBreadcrumb[] = []
+  for (const menu of userMenus) {
+    if (menu.type === 1) {
+      const findMenu = getBreadMenu(menu.children ?? [], currentPath)
+      if (findMenu) {
+        breadcrumbs.push({ name: menu.name })
+        breadcrumbs.push({ name: findMenu.name })
+        return breadcrumbs
+      }
+    } else if (menu.type === 2 && menu.url === currentPath) {
+      return menu
+    }
+  }
+}
 
-//   // 1.先去加载默认所有的routes
-//   const allRoutes: RouteRecordRaw[] = []
-//   const routeFiles = require.context('../router/main', true, /\.ts/)
-//   routeFiles.keys().forEach((key) => {
-//     const route = require('../router/main' + key.split('.')[1])
-//     allRoutes.push(route.default)
-//   })
+export function mapMenuPermission(userMenus: any[]): any[] {
+  const permission: string[] = []
+  const getPermission = (menus: any[]) => {
+    for (const menu of menus) {
+      if (menu.type === 1 || menu.type === 2) {
+        getPermission(menu.children ?? [])
+      } else if (menu.type === 3) {
+        permission.push(menu.permission)
+      }
+    }
+  }
+  getPermission(userMenus)
+  return permission
+}
 
-//   // 2.根据菜单获取需要添加的routes
-//   // userMenus:
-//   // type === 1 -> children -> type === 1
-//   // type === 2 -> url -> route
-
-//   const getRoute = (menus: any) => {
-//     for (const menu of menus) {
-//       if (menu.type === 2) {
-//         const route = allRouter.find((route) => {
-//           return (route.path = menu.url)
-//         })
-//         if (route) {
-//           routers.push(route)
-//         }
-//       } else {
-//         getRoute(menu.children)
-//       }
-//     }
-//   }
-//   const _recurseGetRoute = (menus: any[]) => {
-//     for (const menu of menus) {
-//       if (menu.type === 2) {
-//         const route = allRoutes.find((route) => route.path === menu.url)
-//         if (route) routes.push(route)
-//       } else {
-//         _recurseGetRoute(menu.children)
-//       }
-//     }
-//   }
-
-//   _recurseGetRoute(userMenus)
-
-//   return routes
-// }
+export function checkMenus(menuList: any[]): number[] {
+  const list: number[] = []
+  const recursionMenu = (menus: any[]) => {
+    for (const item of menus) {
+      if (item.children) {
+        recursionMenu(item.children)
+      } else {
+        list.push(item.id)
+      }
+    }
+  }
+  recursionMenu(menuList)
+  return list
+}
+export { firstMenu }
