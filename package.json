@@ -20,7 +20,8 @@
     "normalize.css": "^8.0.1",
     "vue": "^3.0.0",
     "vue-router": "^4.0.10",
-    "vuex": "^4.0.2"
+    "vuex": "^4.0.2",
+    "wangeditor": "^4.7.7"
   },
   "devDependencies": {
     "@commitlint/cli": "^12.1.4",

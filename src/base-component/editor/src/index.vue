@@ -1,9 +1,20 @@
 <template>
-  <div ref="editorRef" class="hy-editor" :style="{ width: width ? `${width}px` : '100%' }"></div>
+  <div
+    ref="editorRef"
+    class="hy-editor"
+    :style="{ width: width ? `${width}px` : '100%' }"
+  ></div>
 </template>
 
 <script lang="ts">
-import { defineComponent, watch, onMounted, onBeforeUnmount, ref, reactive } from 'vue'
+import {
+  defineComponent,
+  watch,
+  onMounted,
+  onBeforeUnmount,
+  ref,
+  reactive
+} from 'vue'
 import type Editor from 'wangeditor'
 import WangEditor from 'wangeditor'
 export interface EditorInfo {
