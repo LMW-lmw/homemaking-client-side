@@ -1,6 +1,6 @@
 import axios from 'axios'
 import type { AxiosInstance } from 'axios'
-import { ElLoading } from 'element-plus'
+import { ElLoading, ElMessage } from 'element-plus'
 import { ILoadingInstance } from 'element-plus/lib/el-loading/src/loading.type'
 import { LmwInterceptors, LmwRequestConfig } from './type'
 
@@ -73,6 +73,7 @@ class LmwAxios {
         .catch((err) => {
           this.showLoading = true
           reject(err)
+          ElMessage.error('响应错误')
           return err
         })
     })

@@ -1,8 +1,7 @@
 <template>
-  <!-- 测试文件 -->
   <div class="sidebar">
     <div class="title">
-      <h3>{{ userInfo.name }}</h3>
+      <h3>{{ userName }}</h3>
       <i class="el-icon-bell icon"></i>
     </div>
     <div class="items" v-for="(menu, index) in menus" :key="menu.id">
@@ -37,9 +36,7 @@
 import { defineComponent, onBeforeUpdate, computed, onMounted } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import siderItem from './siderItem.vue'
-import storage from '@/utils/storage'
-import { useState } from '@/utils/vuexUtil'
-import { hideSide, showSide, showOneSide } from '@/hook/siderHook'
+import { hideSide, showSide, showOneSide } from './util/sider'
 import child from './itemChild.vue'
 export default defineComponent({
   name: 'siderbar',
@@ -47,11 +44,10 @@ export default defineComponent({
     siderItem,
     child
   },
+  props: { menus: { type: Array }, userName: { type: String } },
   setup() {
     const router = useRouter()
     const route = useRoute()
-    let menus = storage.getItem('menus', false)
-    let userInfo = useState(['userInfo'], 'login')
     let childHeigh: any = []
     let child: any = []
     let side: any = []
@@ -94,14 +90,12 @@ export default defineComponent({
       icon = []
     })
     return {
-      menus,
       bindHeith,
       bindChild,
       changeShow,
       mainSide,
       iconRef,
       changeChild,
-      ...userInfo,
       path
     }
   }
@@ -117,6 +111,9 @@ export default defineComponent({
   overflow: scroll;
   padding-right: 20px;
   z-index: 1;
+}
+.sidebar::-webkit-scrollbar {
+  display: none;
 }
 .title {
   height: 50px;

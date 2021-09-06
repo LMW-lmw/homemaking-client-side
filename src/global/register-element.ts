@@ -29,7 +29,11 @@ import {
   ElDropdown,
   ElDropdownMenu,
   ElDropdownItem,
-  ElTree
+  ElTree,
+  ElCard,
+  ElDescriptions,
+  ElDescriptionsItem,
+  ElTag
 } from 'element-plus'
 const components = [
   ElIcon,
@@ -58,7 +62,11 @@ const components = [
   ElDropdown,
   ElDropdownMenu,
   ElDropdownItem,
-  ElTree
+  ElTree,
+  ElCard,
+  ElDescriptions,
+  ElDescriptionsItem,
+  ElTag
 ]
 export default function (app: App): void {
   for (const component of components) {

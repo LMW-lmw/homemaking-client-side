@@ -1,17 +1,6 @@
 <template>
   <div class="main">
-    <!-- <el-container>
-      <sidebar />
-      <el-container class="router">
-        <el-header class="head">Header</el-header>
-        <el-main>
-          <div>
-            <router-view />
-          </div>
-        </el-main>
-      </el-container>
-    </el-container> -->
-    <sidebar />
+    <sidebar :userName="userInfo.name" :menus="menus" />
     <div class="router">
       <topbar />
       <div style="margin-top: 65px"><router-view /></div>
@@ -22,15 +11,24 @@
 <script lang="ts">
 import { defineComponent } from 'vue'
 
-import sidebar from '@/components/sidebar/sideuse.vue'
+import sidebar from '@/components/sidebar'
 import topbar from '@/components/topbar/topbar.vue'
+
+import storage from '@/utils/storage'
+import { useState } from '@/utils/vuexUtil'
+
 export default defineComponent({
   components: {
     sidebar,
     topbar
   },
   setup() {
-    return {}
+    let menus = storage.getItem('menus', false)
+    let userInfo = useState(['userInfo'], 'login')
+    return {
+      menus,
+      ...userInfo
+    }
   }
 })
 </script>

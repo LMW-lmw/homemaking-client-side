@@ -1,6 +1,7 @@
 import { Module } from 'vuex'
 import { ISystem } from './type'
 import { IRootState } from '@/store/type'
+import { ElMessage } from 'element-plus'
 import {
   createData,
   deletData,
@@ -88,17 +89,35 @@ const systemModule: Module<ISystem, IRootState> = {
       const { id, pageName, searchData } = payload
       const name = pageName.toLowerCase()
       const url = `/${name}/${id}`
-      await deletData(url)
+      const data = await deletData(url)
       context.dispatch('getList', {
         pageName,
         queryInfo: searchData
       })
+      if (data) {
+        console.log(data)
+        ElMessage.success({
+          message: '删除成功',
+          type: 'success',
+          showClose: true,
+          duration: 2000
+        })
+      }
     },
     async createDataAction(context, payload: any) {
       // 添加数据
       const { pageName, newData } = payload
       const url = `/${pageName.toLowerCase()}`
-      await createData(url, newData)
+      const data = await createData(url, newData)
+      if (data) {
+        console.log(data)
+        ElMessage.success({
+          message: '添加成功',
+          type: 'success',
+          showClose: true,
+          duration: 2000
+        })
+      }
       context.dispatch('getList', {
         pageName,
         queryInfo: {
@@ -111,7 +130,15 @@ const systemModule: Module<ISystem, IRootState> = {
       // 编辑数据
       const { pageName, editInfo, id } = payload
       const url = `/${pageName.toLowerCase()}/${id}`
-      await editData(url, editInfo)
+      const data = await editData(url, editInfo)
+      if (data) {
+        ElMessage.success({
+          message: '修改成功',
+          type: 'success',
+          showClose: true,
+          duration: 2000
+        })
+      }
       context.dispatch('getList', {
         pageName,
         queryInfo: {

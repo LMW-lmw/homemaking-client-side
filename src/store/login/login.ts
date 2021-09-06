@@ -60,9 +60,7 @@ const loginModule: Module<ILogin, IRootState> = {
     },
     changeMenus(state, menus) {
       state.menus = menus
-      // console.log(menus)
       const routes = mapRouter(menus)
-      // console.log(routes)
       routes.forEach((route) => {
         router.addRoute('main', route)
       })

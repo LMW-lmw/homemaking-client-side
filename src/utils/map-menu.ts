@@ -2,6 +2,7 @@ import { RouteRecordRaw } from 'vue-router'
 import { IBreadcrumb } from '@/components/breadcrumb/type/breadcrumb'
 let firstMenu: any = null
 
+// 根据服务器返回的菜单做动态路由注册
 export function mapRouter(menus: any[]): RouteRecordRaw[] {
   const routers: RouteRecordRaw[] = []
   const allRouter: RouteRecordRaw[] = []
@@ -31,6 +32,7 @@ export function mapRouter(menus: any[]): RouteRecordRaw[] {
   return routers
 }
 
+// 获取面包屑菜单
 export function getBreadMenu(userMenus: any[], currentPath: string): any {
   const breadcrumbs: IBreadcrumb[] = []
   for (const menu of userMenus) {
@@ -47,6 +49,7 @@ export function getBreadMenu(userMenus: any[], currentPath: string): any {
   }
 }
 
+// 取出所有第三级菜单
 export function mapMenuPermission(userMenus: any[]): any[] {
   const permission: string[] = []
   const getPermission = (menus: any[]) => {
@@ -62,6 +65,7 @@ export function mapMenuPermission(userMenus: any[]): any[] {
   return permission
 }
 
+// 取出根菜单的叶子节点
 export function checkMenus(menuList: any[]): number[] {
   const list: number[] = []
   const recursionMenu = (menus: any[]) => {

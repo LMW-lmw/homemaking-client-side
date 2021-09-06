@@ -2,6 +2,8 @@ import { ref } from 'vue'
 import pageDialog from '@/components/page-dialog'
 
 type callBack = (item?: any) => void
+
+// 使用对话框
 export function useDialog(addCallBack?: callBack, editCallback?: callBack) {
   const dialogRef = ref<InstanceType<typeof pageDialog>>()
   const infoInit = ref({})
