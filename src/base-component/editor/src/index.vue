@@ -24,12 +24,6 @@ export interface EditorInfo {
 export default defineComponent({
   components: {},
   props: {
-    // 默认显示的文本
-    // defaultHtmlStr: {
-    //   type: String,
-    //   default: ''
-    // },
-    // 数据双向绑定
     value: {
       type: String,
       default: ''
