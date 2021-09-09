@@ -10,7 +10,7 @@
       <template v-for="item in contentConfig.handleSlot" #[item]>
         <template v-if="isCreate">
           <template v-if="item">
-            <slot :name="item"> </slot>
+            <slot :name="item"></slot>
           </template>
         </template>
       </template>
@@ -74,7 +74,14 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, PropType, ref, watch } from 'vue'
+import {
+  computed,
+  defineComponent,
+  PropType,
+  ref,
+  watch,
+  onUnmounted
+} from 'vue'
 import { useStore } from '@/store/index'
 
 import lmwTable from '@/base-component/table'
@@ -137,6 +144,11 @@ export default defineComponent({
     emitter.on(`search${props.pageName}Info`, (formData) => {
       searchData = formData
       send(formData)
+    })
+    onUnmounted(() => {
+      emitter.off(`search${props.pageName}Info`, () => {
+        console.log(`search${props.pageName}Info`)
+      })
     })
     const dataList = computed(() =>
       store.getters[`system/pageListData`](props.pageName)

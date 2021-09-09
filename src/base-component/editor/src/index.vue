@@ -1,7 +1,7 @@
 <template>
   <div
     ref="editorRef"
-    class="hy-editor"
+    class="lmw-editor"
     :style="{ width: width ? `${width}px` : '100%' }"
   ></div>
 </template>
@@ -151,7 +151,7 @@ export default defineComponent({
 </script>
 
 <style lang="less" scoped>
-.hy-editor {
+.lmw-editor {
   text-align: left;
 }
 </style>

@@ -1,5 +1,5 @@
 <template>
-  <div class="hy-code">
+  <div class="lmw-code">
     <pre class="bg">
       <code :class="'language'+language" v-html="highlightedCode" />
     </pre>
