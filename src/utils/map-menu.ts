@@ -70,7 +70,7 @@ export function checkMenus(menuList: any[]): number[] {
   const list: number[] = []
   const recursionMenu = (menus: any[]) => {
     for (const item of menus) {
-      if (item.children) {
+      if (item.children && item.children?.length != 0) {
         recursionMenu(item.children)
       } else {
         list.push(item.id)

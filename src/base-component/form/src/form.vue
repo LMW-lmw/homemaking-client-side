@@ -3,7 +3,12 @@
     <div class="header">
       <slot name="header"></slot>
     </div>
-    <el-form :label-width="lableWidth">
+    <el-form
+      :label-width="lableWidth"
+      ref="formRules"
+      :rules="rules"
+      :model="data"
+    >
       <el-row>
         <template v-for="item in formItems" :key="item.id">
           <el-col v-bind="collLayout">
@@ -13,6 +18,7 @@
               :style="itemStyle"
               v-show="!item.isHidden"
               class="form-item"
+              :prop="item.field"
             >
               <template
                 v-if="item.type === 'input' || item.type === 'password'"
@@ -63,7 +69,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType } from 'vue'
+import { defineComponent, PropType, ref } from 'vue'
 import { IFormItem } from '../type'
 export default defineComponent({
   name: 'lmwForm',
@@ -95,6 +101,10 @@ export default defineComponent({
         sm: 12, //768 1
         xs: 24 //<768 1
       })
+    },
+    rules: {
+      type: Object,
+      default: () => ({})
     }
   },
   emits: ['update:data'],
@@ -109,10 +119,21 @@ export default defineComponent({
     //     deep: true
     //   }
     // )
+    let formRules = ref()
     const handleValueChange = (value: any, field: string) => {
       emit('update:data', { ...props.data, [field]: value })
     }
-    return { handleValueChange }
+    let commit = (success: any) => {
+      formRules.value.validate((valid: any) => {
+        if (valid) {
+          success()
+        } else {
+          console.log('error submit!!')
+          return false
+        }
+      })
+    }
+    return { handleValueChange, commit, formRules }
   }
 })
 </script>

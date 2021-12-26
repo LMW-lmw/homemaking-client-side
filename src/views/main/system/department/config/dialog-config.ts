@@ -7,6 +7,13 @@ export const dialogConfig: IForm = {
         message: '请输入类型名',
         trigger: 'blur'
       }
+    ],
+    leader: [
+      {
+        required: true,
+        message: '负责人姓名',
+        trigger: 'blur'
+      }
     ]
   },
   formItems: [
@@ -16,6 +23,13 @@ export const dialogConfig: IForm = {
       type: 'input',
       label: '类型名称',
       placeholder: '请输入类型名'
+    },
+    {
+      id: 2,
+      field: 'leader',
+      type: 'input',
+      label: '负责人',
+      placeholder: '负责人姓名'
     }
   ],
   collLayout: {

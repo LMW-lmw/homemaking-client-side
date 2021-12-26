@@ -16,8 +16,8 @@ const systemModule: Module<ISystem, IRootState> = {
       usersCount: 0,
       roleList: [],
       roleCount: 0,
-      goodsList: [],
-      gootsCount: 0,
+      workerList: [],
+      workerCount: 0,
       menuList: [],
       departmentList: [],
       departmentCount: 0,
@@ -38,11 +38,11 @@ const systemModule: Module<ISystem, IRootState> = {
     changeRoleCount(state, count: number) {
       state.roleCount = count
     },
-    changeGoodsList(state, list: any[]) {
-      state.goodsList = list
+    changeWorkerList(state, list: any[]) {
+      state.workerList = list
     },
-    changeGoodsCount(state, count: number) {
-      state.goodsCount = count
+    changeWorkerCount(state, count: number) {
+      state.workerCount = count
     },
     changeMenuList(state, list: any[]) {
       state.menuList = list
@@ -95,13 +95,22 @@ const systemModule: Module<ISystem, IRootState> = {
         queryInfo: searchData
       })
       if (data) {
-        console.log(data)
-        ElMessage.success({
-          message: '删除成功',
-          type: 'success',
-          showClose: true,
-          duration: 2000
-        })
+        // console.log(data)
+        if (data.response) {
+          ElMessage.error({
+            message: '删除失败',
+            type: 'error',
+            showClose: true,
+            duration: 2000
+          })
+        } else {
+          ElMessage.success({
+            message: '删除成功',
+            type: 'success',
+            showClose: true,
+            duration: 2000
+          })
+        }
       }
     },
     async createDataAction(context, payload: any) {
@@ -110,13 +119,22 @@ const systemModule: Module<ISystem, IRootState> = {
       const url = `/${pageName.toLowerCase()}`
       const data = await createData(url, newData)
       if (data) {
-        console.log(data)
-        ElMessage.success({
-          message: '添加成功',
-          type: 'success',
-          showClose: true,
-          duration: 2000
-        })
+        // console.log(data)
+        if (data.response) {
+          ElMessage.error({
+            message: '添加失败',
+            type: 'error',
+            showClose: true,
+            duration: 2000
+          })
+        } else {
+          ElMessage.success({
+            message: '添加成功',
+            type: 'success',
+            showClose: true,
+            duration: 2000
+          })
+        }
       }
       context.dispatch('getList', {
         pageName,
@@ -132,12 +150,21 @@ const systemModule: Module<ISystem, IRootState> = {
       const url = `/${pageName.toLowerCase()}/${id}`
       const data = await editData(url, editInfo)
       if (data) {
-        ElMessage.success({
-          message: '修改成功',
-          type: 'success',
-          showClose: true,
-          duration: 2000
-        })
+        if (data.response) {
+          ElMessage.error({
+            message: '修改失败',
+            type: 'error',
+            showClose: true,
+            duration: 2000
+          })
+        } else {
+          ElMessage.success({
+            message: '修改成功',
+            type: 'success',
+            showClose: true,
+            duration: 2000
+          })
+        }
       }
       context.dispatch('getList', {
         pageName,

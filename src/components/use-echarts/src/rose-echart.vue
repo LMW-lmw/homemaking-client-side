@@ -22,6 +22,10 @@ export default defineComponent({
   setup(props) {
     const option = computed(() => {
       return {
+        tooltip: {
+          trigger: 'item',
+          formatter: '{a} <br/>{b} : {c} ({d}%)'
+        },
         toolbox: {
           show: true,
           feature: {
@@ -33,9 +37,9 @@ export default defineComponent({
         },
         series: [
           {
-            name: '面积模式',
+            name: '人数',
             type: 'pie',
-            radius: [20, 100],
+            radius: [50, 100],
             center: ['50%', '50%'],
             roseType: 'area',
             itemStyle: {

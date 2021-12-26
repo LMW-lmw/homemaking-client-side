@@ -7,8 +7,9 @@ module.exports = {
   devServer: {
     hot: true, //自动保存
     proxy: {
+      // 配置跨域
       '^/api': {
-        target: 'http://152.136.185.210:5000/',
+        target: 'http://localhost:3000/',
         pathRewrite: {
           '^/api': ''
         },

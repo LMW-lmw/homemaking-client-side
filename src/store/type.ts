@@ -4,6 +4,7 @@ import { IDashboard } from './main/overview/type'
 export interface IRootState {
   name: string
   department: any[]
+  category: any[]
   role: any[]
   menu: any[]
 }

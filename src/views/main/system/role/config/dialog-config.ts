@@ -1,5 +1,21 @@
 import { IForm } from '@/base-component/form'
 export const dialogConfig: IForm = {
+  rules: {
+    name: [
+      {
+        required: true,
+        message: '请输入角色名',
+        trigger: 'blur'
+      }
+    ],
+    intro: [
+      {
+        required: true,
+        message: '请输入角色权限',
+        trigger: 'blur'
+      }
+    ]
+  },
   formItems: [
     {
       id: 1,

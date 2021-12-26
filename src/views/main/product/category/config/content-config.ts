@@ -3,7 +3,7 @@ export const contentConfig: ITable = {
   tableItem: [
     {
       prop: 'name',
-      label: '商品类型',
+      label: '行业类型',
       minWidth: '100'
     },
     {
@@ -24,7 +24,7 @@ export const contentConfig: ITable = {
       slotName: 'todo'
     }
   ],
-  pagination: false,
+  pagination: true,
   handleSlot: ['handle'],
-  title: '商品类型'
+  title: '行业类型'
 }

@@ -32,6 +32,12 @@ export default defineComponent({
         title: {
           text: props.title
         },
+        tooltip: {
+          trigger: 'axis',
+          axisPointer: {
+            type: 'shadow'
+          }
+        },
         xAxis: {
           data: props.xlabel,
           axisLabel: {

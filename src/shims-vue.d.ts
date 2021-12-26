@@ -6,3 +6,4 @@ declare module '*.vue' {
 }
 
 declare module '*.json'
+declare module 'element-china-area-data'

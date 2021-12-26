@@ -7,7 +7,7 @@
       </div>
     </lmw-card>
     <lmw-card title="技术栈">
-      <hy-text-link :text-arrs="technologyStacks" />
+      <lmw-text-link :text-arrs="technologyStacks" />
       <lmw-descriptions
         title="生产环境依赖"
         :column="2"
@@ -90,6 +90,7 @@
 import { defineComponent } from 'vue'
 import lmwCode from '@/base-component/code'
 import lmwCard from '@/base-component/card'
+import lmwTextLink from '@/base-component/text-link'
 import lmwDescriptions from '@/base-component/descriptions'
 
 import {
@@ -104,7 +105,8 @@ export default defineComponent({
   components: {
     lmwCard,
     lmwCode,
-    lmwDescriptions
+    lmwDescriptions,
+    lmwTextLink
   },
   setup() {
     return { technologyStacks, dependencies, devDependencies, projectDir }

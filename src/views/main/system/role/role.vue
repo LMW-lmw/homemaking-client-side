@@ -55,8 +55,10 @@ export default defineComponent({
     const menuList = computed(() => store.state.menu)
     const editCallBack = (item: any) => {
       const key = checkMenus(item.menuList)
+      // console.log(key)
       nextTick(() => {
         treeRef.value?.setCheckedKeys(key, false)
+        // console.log(treeRef.value)
       })
     }
     const [dialogRef, infoInit, addClick, editBtnClick] = useDialog(

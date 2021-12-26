@@ -38,12 +38,12 @@ export const contentConfig: ITable = {
       label: '更新时间',
       minWidth: '150',
       slotName: 'updateTime'
-    },
-    {
-      label: '操作',
-      minWidth: '80',
-      slotName: 'todo'
     }
+    // {
+    //   label: '操作',
+    //   minWidth: '80',
+    //   slotName: 'todo'
+    // }
   ],
   pagination: false,
   childrenProps: {

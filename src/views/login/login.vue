@@ -66,7 +66,6 @@ export default defineComponent({
         ? storage.getItem('info', false).check
         : false
     })
-
     const userActive = () => {
       UserIsActive.value = !UserIsActive.value
       if (user.userName !== '') {
@@ -87,6 +86,7 @@ export default defineComponent({
           password: user.passWord,
           check: true
         }
+        console.log(info)
         storage.setItem('info', info, false)
       } else {
         storage.clear()

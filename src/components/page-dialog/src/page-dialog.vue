@@ -7,7 +7,11 @@
       center
       destroy-on-close
     >
-      <lmw-form v-model:data="formData" v-bind="dialogConfig"></lmw-form>
+      <lmw-form
+        v-model:data="formData"
+        v-bind="dialogConfig"
+        ref="form"
+      ></lmw-form>
       <slot></slot>
       <template #footer>
         <span class="dialog-footer">
@@ -49,6 +53,7 @@ export default defineComponent({
     let dialogVisible = ref(false)
     let formData = ref<any>({})
     let title = ref('')
+    let form = ref<InstanceType<typeof lmwForm>>()
     const store = useStore()
     watch(
       () => props.infoInit,
@@ -59,23 +64,29 @@ export default defineComponent({
       }
     )
     const commitClick = () => {
-      dialogVisible.value = false
-      if (Object.keys(props.infoInit).length) {
-        //编辑
-        store.dispatch('system/editDataAction', {
-          pageName: props.pageName,
-          editInfo: { ...formData.value, ...props.otherInfo },
-          id: props.infoInit.id
-        })
-      } else {
-        //新建
-        store.dispatch('system/createDataAction', {
-          pageName: props.pageName,
-          newData: { ...formData.value, ...props.otherInfo }
-        })
+      const success = () => {
+        dialogVisible.value = false
+        if (Object.keys(props.infoInit).length) {
+          //编辑
+          // console.log('编辑：', { ...formData.value, ...props.otherInfo })
+          // console.log(props.infoInit.id)
+          store.dispatch('system/editDataAction', {
+            pageName: props.pageName,
+            editInfo: { ...formData.value, ...props.otherInfo },
+            id: props.infoInit.id
+          })
+        } else {
+          //新建
+          store.dispatch('system/createDataAction', {
+            pageName: props.pageName,
+            newData: { ...formData.value, ...props.otherInfo }
+          })
+          // console.log({ ...formData.value, ...props.otherInfo })
+        }
       }
+      form.value?.commit(success)
     }
-    return { dialogVisible, formData, title, commitClick }
+    return { dialogVisible, formData, title, commitClick, form }
   }
 })
 </script>

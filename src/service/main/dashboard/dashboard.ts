@@ -1,10 +1,8 @@
 import LmwRequest from '@/service/index'
 
 enum dashboardApi {
-  categoryCount = '/goods/category/count',
-  categorySale = '/goods/category/sale',
-  categoryFavor = '/goods/category/favor',
-  addressSale = '/goods/address/sale'
+  categoryCount = '/echart/catary/top',
+  categoryTop = '/echart/worker/top'
 }
 
 export function getCategoryCount() {
@@ -13,18 +11,8 @@ export function getCategoryCount() {
   })
 }
 
-export function getCategorySale() {
+export function getCategoryTop() {
   return LmwRequest.get<any>({
-    url: dashboardApi.categorySale
-  })
-}
-export function getCategoryFavor() {
-  return LmwRequest.get<any>({
-    url: dashboardApi.categoryFavor
-  })
-}
-export function getAddressSale() {
-  return LmwRequest.get<any>({
-    url: dashboardApi.addressSale
+    url: dashboardApi.categoryTop
   })
 }

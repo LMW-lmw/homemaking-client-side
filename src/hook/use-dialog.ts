@@ -11,9 +11,6 @@ export function useDialog(addCallBack?: callBack, editCallback?: callBack) {
     if (dialogRef.value) {
       dialogRef.value.title = '添加'
       dialogRef.value.dialogVisible = true
-      // for (const item in dialogRef.value.formData) {
-      //   dialogRef.value.formData[item] = ''
-      // }
       infoInit.value = {}
     }
     addCallBack && addCallBack()

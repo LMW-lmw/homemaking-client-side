@@ -3,8 +3,8 @@ export interface ISystem {
   usersCount?: number
   roleList?: any[]
   roleCount?: number
-  goodsList?: any[]
-  goodsCount?: number
+  workerList?: any[]
+  workerCount?: number
   menuList?: any[]
   departmentList?: any[]
   departmentCount?: number

@@ -130,7 +130,6 @@ export default defineComponent({
     const send = (searchInfo?: any) => {
       if (!isQuery) return
       store.dispatch('system/getList', {
-        // pageUrl: '/users/list',
         pageName: props.pageName,
         queryInfo: {
           offset:
@@ -179,6 +178,7 @@ export default defineComponent({
       })
     }
     const editCLick = (item: any) => {
+      // console.log('pagecontent', item)
       emit('editBtnClick', item)
     }
     return {

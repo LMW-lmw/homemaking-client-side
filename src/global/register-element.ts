@@ -34,7 +34,8 @@ import {
   ElDescriptions,
   ElDescriptionsItem,
   ElTag,
-  ElLink
+  ElLink,
+  ElCascader
 } from 'element-plus'
 const components = [
   ElIcon,
@@ -68,7 +69,8 @@ const components = [
   ElDescriptions,
   ElDescriptionsItem,
   ElTag,
-  ElLink
+  ElLink,
+  ElCascader
 ]
 export default function (app: App): void {
   for (const component of components) {

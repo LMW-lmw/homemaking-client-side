@@ -1,5 +1,49 @@
 import { IForm } from '@/base-component/form'
 export const dialogConfig: IForm = {
+  rules: {
+    name: [
+      {
+        required: true,
+        message: '请输入名字',
+        trigger: 'blur'
+      }
+    ],
+    realname: [
+      {
+        required: true,
+        message: '请输入真实姓名',
+        trigger: 'blur'
+      }
+    ],
+    // password: [
+    //   {
+    //     required: true,
+    //     message: '请输入密码',
+    //     trigger: 'blur'
+    //   }
+    // ],
+    cellphone: [
+      {
+        required: true,
+        message: '请输入电话号码',
+        trigger: 'blur'
+      }
+    ],
+    departmentId: [
+      {
+        required: true,
+        message: '请选择部门信息',
+        trigger: 'change'
+      }
+    ],
+    roleId: [
+      {
+        required: true,
+        message: '请选择角色信息',
+        trigger: 'change'
+      }
+    ]
+  },
   formItems: [
     {
       id: 1,
@@ -20,7 +64,7 @@ export const dialogConfig: IForm = {
       field: 'password',
       type: 'password',
       label: '密码',
-      placeholder: '请输入密码',
+      placeholder: '请输入密码(默认密码为0)',
       isHidden: true
     },
     {

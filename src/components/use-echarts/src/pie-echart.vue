@@ -30,9 +30,10 @@ export default defineComponent({
         },
         series: [
           {
-            name: '分类数据',
+            name: '人数',
             type: 'pie',
             radius: '50%',
+            center: ['50%', '50%'],
             data: props.echartData,
             emphasis: {
               itemStyle: {

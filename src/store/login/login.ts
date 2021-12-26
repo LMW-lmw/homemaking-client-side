@@ -28,7 +28,8 @@ const loginModule: Module<ILogin, IRootState> = {
       storage.setItem('userInfo', userInfo, false)
       commit('changeUserInfo', userInfo)
       // 储存用户权限菜单
-      const menus = await getMenus(userInfo.role.id)
+      // console.log(userInfo.id)
+      const menus = await getMenus(id)
       storage.setItem('menus', menus, false)
       commit('changeMenus', menus)
       // 跳转
