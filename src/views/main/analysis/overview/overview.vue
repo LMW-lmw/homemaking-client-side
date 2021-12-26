@@ -77,9 +77,13 @@
         :column="1"
         :table-datas="[
           { name: 'add 操作', description: 'git add .' },
-          { name: 'commit 操作', description: 'npm commit ' },
+          { name: 'commit 操作', description: 'npm run commit ' },
           { name: 'pull 操作', description: 'git pull ' },
-          { name: 'push 操作', description: 'git push ' }
+          { name: 'push 操作', description: 'git push ' },
+          {
+            name: 'gitHub地址',
+            description: 'https://github.com/LMW-lmw/homemaking-client-side'
+          }
         ]"
       />
     </lmw-card>
