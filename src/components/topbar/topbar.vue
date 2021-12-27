@@ -12,20 +12,6 @@
         </el-dropdown-menu>
       </template>
     </el-dropdown>
-    <!-- <el-dropdown>
-      <span class="el-dropdown-link">
-        下拉菜单<i class="el-icon-arrow-down el-icon--right"></i>
-      </span>
-      <template #dropdown>
-        <el-dropdown-menu>
-          <el-dropdown-item>黄金糕</el-dropdown-item>
-          <el-dropdown-item>狮子头</el-dropdown-item>
-          <el-dropdown-item>螺蛳粉</el-dropdown-item>
-          <el-dropdown-item disabled>双皮奶</el-dropdown-item>
-          <el-dropdown-item divided>蚵仔煎</el-dropdown-item>
-        </el-dropdown-menu>
-      </template>
-    </el-dropdown> -->
   </div>
 </template>
 <script lang="ts">
@@ -40,12 +26,7 @@ export default defineComponent({
     const username = store.state.login.userInfo.name
     const router = useRouter()
     const loginOut = () => {
-      if (storage.getItem('token')) {
-        storage.removeItem('token')
-      }
-      if (storage.getItem('token', false)) {
-        storage.removeItem('token', false)
-      }
+      storage.clear()
       router.push('/login')
     }
     return { username, loginOut }
