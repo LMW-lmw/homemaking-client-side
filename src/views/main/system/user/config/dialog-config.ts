@@ -29,14 +29,14 @@ export const dialogConfig: IForm = {
         trigger: 'blur'
       }
     ],
-    departmentId: [
+    department: [
       {
         required: true,
         message: '请选择部门信息',
         trigger: 'change'
       }
     ],
-    roleId: [
+    role: [
       {
         required: true,
         message: '请选择角色信息',
@@ -76,7 +76,7 @@ export const dialogConfig: IForm = {
     },
     {
       id: 5,
-      field: 'departmentId',
+      field: 'department',
       type: 'select',
       label: '部门',
       placeholder: '请选择部门',
@@ -84,7 +84,7 @@ export const dialogConfig: IForm = {
     },
     {
       id: 6,
-      field: 'roleId',
+      field: 'role',
       type: 'select',
       label: '角色',
       placeholder: '请选择角色',

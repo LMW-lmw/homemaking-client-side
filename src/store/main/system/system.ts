@@ -146,7 +146,7 @@ const systemModule: Module<ISystem, IRootState> = {
     },
     async editDataAction(context, payload: any) {
       // 编辑数据
-      const { pageName, editInfo, id } = payload
+      const { pageName, editInfo, id, searchData } = payload
       const url = `/${pageName.toLowerCase()}/${id}`
       const data = await editData(url, editInfo)
       if (data) {
@@ -170,7 +170,8 @@ const systemModule: Module<ISystem, IRootState> = {
         pageName,
         queryInfo: {
           offset: 0,
-          size: 10
+          size: 10,
+          ...searchData
         }
       })
     }

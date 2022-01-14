@@ -23,16 +23,16 @@ export const contentConfig: ITable = {
       slotName: 'status'
     },
     {
-      prop: 'departmentId',
+      prop: 'department',
       label: '部门',
-      minWidth: '80',
-      slotName: 'department'
+      minWidth: '80'
+      // slotName: 'department'
     },
     {
-      prop: 'roleId',
+      prop: 'role',
       label: '角色',
-      minWidth: '100',
-      slotName: 'role'
+      minWidth: '100'
+      // slotName: 'role'
     },
     {
       prop: 'createAt',
@@ -52,7 +52,7 @@ export const contentConfig: ITable = {
       slotName: 'todo'
     }
   ],
-  showChoose: true,
+  // showChoose: true,
   showIndex: true,
   pagination: true,
   handleSlot: ['handle'],

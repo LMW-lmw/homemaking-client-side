@@ -29,9 +29,17 @@ export const formConfig: IForm = {
       placeholder: '请选择用户状态',
       options: [
         { title: '全部', value: '' },
-        { title: '禁用', value: 0 },
-        { title: '启用', value: 1 }
+        { title: '禁用', value: '禁用' },
+        { title: '启用', value: '启用' }
       ]
+    },
+    {
+      field: 'role',
+      id: 6,
+      type: 'select',
+      label: '用户权限',
+      placeholder: '请选择用户权限',
+      options: []
     },
     {
       field: 'createAt',

@@ -1,6 +1,9 @@
 <template>
   <div class="user">
-    <page-search :formConfig="formConfig" pageName="Users"></page-search>
+    <page-search
+      :formConfig="searchConfigComputed"
+      pageName="Users"
+    ></page-search>
     <page-content
       :contentConfig="contentConfig"
       pageName="Users"
@@ -19,7 +22,7 @@
       <template #handle>
         <el-button type="primary" @click="addClick">添加用户</el-button>
       </template>
-      <template #department="data">
+      <!-- <template #department="data">
         <span>
           {{
             $store.state.department.find(
@@ -27,14 +30,14 @@
             )?.name
           }}
         </span>
-      </template>
-      <template #role="data">
+      </template> -->
+      <!-- <template #role="data">
         <span>
           {{
             $store.state.role.find((item) => item.id === data.back.roleId)?.name
           }}
         </span>
-      </template>
+      </template> -->
     </page-content>
     <page-dialog
       :dialogConfig="dialogConfigComputed"
@@ -58,13 +61,18 @@ import { dialogConfig } from './config/dialog-config'
 
 import { useDialog } from '@/hook/use-dialog'
 import { useStore } from '@/store'
-
+import emitter from '@/utils/mitt'
 export default defineComponent({
   name: 'user',
   components: { pageSearch, pageContent, pageDialog },
 
   setup() {
     const store = useStore()
+    // 输入框的信息
+    let searchData: any = ''
+    emitter.on(`searchUsersInfo`, (formData) => {
+      searchData = formData
+    })
     //控制添加和编辑框password输入框显示和隐藏
     const addCallBack = () => {
       const passwordItem = dialogConfig.formItems.find(
@@ -90,19 +98,19 @@ export default defineComponent({
     // 添加部门和角色菜单
     const dialogConfigComputed = computed(() => {
       const departmentItem = dialogConfig.formItems.find(
-        (item) => item.field === 'departmentId'
+        (item) => item.field === 'department'
       )
       const roleItem = dialogConfig.formItems.find(
-        (item) => item.field === 'roleId'
+        (item) => item.field === 'role'
       )
       if (departmentItem) {
         departmentItem.options = store.state.department.map((item) => {
-          return { title: item.name, value: item.id }
+          return { title: item.name, value: item.name }
         })
       }
       if (roleItem) {
         roleItem.options = store.state.role.map((item) => {
-          return { title: item.name, value: item.id }
+          return { title: item.name, value: item.name }
         })
       }
       return dialogConfig
@@ -110,6 +118,7 @@ export default defineComponent({
     // 修改用户状态
     const changeUserEnable = (data: any) => {
       let info = { ...data }
+      console.log(info)
       const { cellphone, enable, name, realname, roleId, departmentId } = info
       const editInfo = {
         cellphone,
@@ -125,17 +134,30 @@ export default defineComponent({
         store.dispatch('system/editDataAction', {
           pageName: 'Users',
           editInfo: editInfo,
-          id
+          id,
+          searchData
         })
       } else {
         editInfo.enable = 1
         store.dispatch('system/editDataAction', {
           pageName: 'Users',
           editInfo: editInfo,
-          id
+          id,
+          searchData
         })
       }
     }
+    const searchConfigComputed = computed(() => {
+      const roleItem = formConfig.formItems.find(
+        (item) => item.field === 'role'
+      )
+      if (roleItem) {
+        roleItem.options = store.state.role.map((item) => {
+          return { title: item.name, value: item.name }
+        })
+      }
+      return formConfig
+    })
     return {
       formConfig,
       contentConfig,
@@ -144,7 +166,8 @@ export default defineComponent({
       editBtnClick,
       dialogRef,
       infoInit,
-      changeUserEnable
+      changeUserEnable,
+      searchConfigComputed
     }
   }
 })

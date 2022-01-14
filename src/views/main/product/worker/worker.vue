@@ -1,19 +1,22 @@
 <template>
   <div class="worker">
-    <page-search :formConfig="formConfig" pageName="Worker"></page-search>
+    <page-search
+      :formConfig="searchConfigComputed"
+      pageName="Worker"
+    ></page-search>
     <page-content
       :contentConfig="contentConfig"
       pageName="Worker"
       @editBtnClick="editBtnClick"
     >
-      <template #type="data">
+      <!-- <template #type="data">
         <span>
           {{
             $store.state.category.find((item) => item.id === data.back.type)
               ?.name
           }}
         </span>
-      </template>
+      </template> -->
       <template #handle>
         <el-button type="primary" @click="addClick">添加人员</el-button>
       </template>
@@ -73,7 +76,7 @@ export default defineComponent({
       )
       if (typeItem) {
         typeItem.options = store.state.category.map((item) => {
-          return { title: item.name, value: item.id }
+          return { title: item.name, value: item.name }
         })
       }
       return dialogConfig
@@ -92,24 +95,30 @@ export default defineComponent({
       otherInfos.value.area = val[2]
     }
     const edit = (info: any) => {
-      // console.log(info)
       let arr = [`${info.provinceid}`, `${info.cityid}`, `${info.areaid}`]
       selectedOptions.value = arr
       otherInfos.value.province = arr[0]
       otherInfos.value.city = arr[1]
       otherInfos.value.area = arr[2]
-      // otherInfos.value.id = info.id
-      // console.log(otherInfos.value)
-      // console.log(selectedOptions.value)
     }
     const add = () => {
       selectedOptions.value = []
     }
     const [dialogRef, infoInit, addClick, editBtnClick] = useDialog(add, edit)
-
+    const searchConfigComputed = computed(() => {
+      const typeItem = formConfig.formItems.find(
+        (item) => item.field === 'type'
+      )
+      if (typeItem) {
+        typeItem.options = store.state.category.map((item) => {
+          return { title: item.name, value: item.name }
+        })
+      }
+      return formConfig
+    })
     return {
       contentConfig,
-      formConfig,
+      searchConfigComputed,
       workerDialogConfig,
       dialogRef,
       infoInit,

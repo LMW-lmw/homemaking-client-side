@@ -23,8 +23,8 @@ export const contentConfig = {
     {
       prop: 'type',
       label: '行业',
-      minWidth: '100',
-      slotName: 'type'
+      minWidth: '100'
+      // slotName: 'type'
     },
     {
       prop: 'remuneration',

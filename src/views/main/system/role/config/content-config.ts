@@ -24,7 +24,8 @@ export const contentConfig: ITable = {
     }
   ],
   showIndex: true,
-  showChoose: true,
+  // showChoose: true,
+  pagination: false,
   handleSlot: ['handle'],
   title: '用户管理'
 }

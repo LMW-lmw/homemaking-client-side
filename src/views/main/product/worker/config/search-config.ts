@@ -14,6 +14,12 @@ export const formConfig: IForm = {
       id: 2,
       type: 'input',
       label: '电话号码'
+    },
+    {
+      field: 'type',
+      id: 3,
+      type: 'select',
+      label: '家政类型'
     }
   ]
 }
