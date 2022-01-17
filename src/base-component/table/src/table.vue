@@ -112,6 +112,7 @@ export default defineComponent({
     }
     const handleCurrentChange = (pageCurrent: number) => {
       pageCurrent = pageCurrent - 1
+      console.log('table:', { ...props.paginationInfo, pageCurrent })
       emit('update:paginationInfo', { ...props.paginationInfo, pageCurrent })
     }
     const handleSizeChange = (pageSize: number) => {

@@ -55,18 +55,21 @@ export default defineComponent({
     const menuList = computed(() => store.state.menu)
     const editCallBack = (item: any) => {
       const key = checkMenus(item.menuList)
+      console.log(key)
+      roleInfo.value.menuList = key
       // console.log(key)
       nextTick(() => {
         treeRef.value?.setCheckedKeys(key, false)
-        // console.log(treeRef.value)
       })
     }
     const [dialogRef, infoInit, addClick, editBtnClick] = useDialog(
       undefined,
       editCallBack
     )
-    const roleInfo = ref<any>()
-    const roleCheck = (allMenu: any, checkMenu: any) => {
+    const roleInfo = ref<any>({
+      menuList: []
+    })
+    const roleCheck = (allMenu?: any, checkMenu?: any) => {
       const checkedKeys = checkMenu.checkedKeys
       const halfCheckedKeys = checkMenu.halfCheckedKeys
       const menuList = [...checkedKeys, ...halfCheckedKeys]

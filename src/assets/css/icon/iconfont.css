@@ -1,12 +1,12 @@
 @font-face {
-  font-family: "iconfont"; /* Project id 2728038 */
+  font-family: 'iconfont'; /* Project id 2728038 */
   src: url('iconfont.woff2?t=1628404677302') format('woff2'),
-       url('iconfont.woff?t=1628404677302') format('woff'),
-       url('iconfont.ttf?t=1628404677302') format('truetype');
+    url('iconfont.woff?t=1628404677302') format('woff'),
+    url('iconfont.ttf?t=1628404677302') format('truetype');
 }
 
 .iconfont {
-  font-family: "iconfont" !important;
+  font-family: 'iconfont';
   font-size: 16px;
   font-style: normal;
   -webkit-font-smoothing: antialiased;
@@ -14,22 +14,21 @@
 }
 
 .icon-icon-say:before {
-  content: "\e67a";
+  content: '\e67a';
 }
 
 .icon-a-shezhi:before {
-  content: "\e678";
+  content: '\e678';
 }
 
 .icon-shangpin:before {
-  content: "\e7ad";
+  content: '\e7ad';
 }
 
 .icon-xitong1:before {
-  content: "\e621";
+  content: '\e621';
 }
 
 .icon-zu35055:before {
-  content: "\e627";
+  content: '\e627';
 }
-

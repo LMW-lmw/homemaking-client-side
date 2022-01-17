@@ -1,7 +1,8 @@
-// const path = require('path')
+const path = require('path')
 // function resolve(dir) {
 //   return path.join(__dirname, dir) //path.join(__dirname)设置绝对路径
 // }
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
 module.exports = {
   outputDir: './build',
   devServer: {
@@ -17,13 +18,31 @@ module.exports = {
       }
     }
   },
-  configureWebpack: {
-    resolve: {
-      alias: {
-        components: '@/components'
-      }
+  configureWebpack: (config) => {
+    if (process.env.NODE_ENV === 'production') {
+      // 为生产环境修改配置
+      config.plugins.push(
+        new UglifyJsPlugin({
+          uglifyOptions: {
+            compress: {
+              drop_debugger: true,
+              drop_console: true //生产环境自动删除console
+            },
+            warnings: false
+          },
+          sourceMap: false,
+          parallel: true //使用多进程并行运行来提高构建速度。默认并发运行数：os.cpus().length - 1。
+        })
+      )
     }
   }
+  // configureWebpack: {
+  //   resolve: {
+  //     alias: {
+  //       components: '@/components'
+  //     }
+  //   }
+  // }
   // chainWebpack: (config) => {
   //   config.resolve.alias
   //     .set('@', resolve('./src'))
@@ -36,10 +55,9 @@ module.exports = {
   // }
   // configureWebpack: (config) => {
   //   config.resolve.alias = {
-  //     '@': path.resolve(__dirname, 'src'),
-  //     views: '@/views'
+  //     '@': path.resolve(__dirname, 'src')
   //   }
-  // },
+  // }
   // chainWebpack: (config) => {
   //   config.resolve.alias
   //     .set('@', path.resolve(__dirname, 'src'))

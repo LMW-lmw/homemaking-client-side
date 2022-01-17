@@ -8,15 +8,8 @@
       :contentConfig="contentConfig"
       pageName="Worker"
       @editBtnClick="editBtnClick"
+      ref="pageContentRef"
     >
-      <!-- <template #type="data">
-        <span>
-          {{
-            $store.state.category.find((item) => item.id === data.back.type)
-              ?.name
-          }}
-        </span>
-      </template> -->
       <template #handle>
         <el-button type="primary" @click="addClick">添加人员</el-button>
       </template>
@@ -28,6 +21,7 @@
       :infoInit="infoInit"
       ref="dialogRef"
       :otherInfo="otherInfos"
+      :searchData="searchData"
     >
       <div>
         <label style="margin: 0px 12px 0px 40px">地区</label>
@@ -45,7 +39,7 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, ref } from 'vue'
+import { computed, defineComponent, ref, watch } from 'vue'
 import { useStore } from '@/store'
 
 import pageSearch from '@/components/page-search'
@@ -57,6 +51,7 @@ import { contentConfig } from './config/content-config'
 import { dialogConfig } from './config/dialog-config'
 
 import { useDialog } from '@/hook/use-dialog'
+import emitter from '@/utils/mitt'
 
 // 中国区域
 import { regionDataPlus } from 'element-china-area-data'
@@ -81,7 +76,6 @@ export default defineComponent({
       }
       return dialogConfig
     })
-    // let selectedOptions = ref<[]>()
     let otherInfos = ref<any>({
       province: '',
       city: '',
@@ -89,7 +83,6 @@ export default defineComponent({
     })
     const selectedOptions: any = ref([])
     const handleChange = (val: any) => {
-      // console.log(selectedOptions.value)
       otherInfos.value.province = val[0]
       otherInfos.value.city = val[1]
       otherInfos.value.area = val[2]
@@ -116,6 +109,26 @@ export default defineComponent({
       }
       return formConfig
     })
+    // 搜索框和分页信息
+    let searchData: any = ref({})
+    let pageContentRef = ref<InstanceType<typeof pageContent>>()
+    emitter.on(`searchWorkerInfo`, (formData) => {
+      // console.log('user: ', formData)
+      searchData.value = formData
+      console.log('workers: ', searchData.value)
+    })
+    watch(
+      () => pageContentRef.value?.paginationInfo,
+      (newValue: any) => {
+        if (newValue) {
+          searchData.value.offset = newValue.pageCurrent * newValue.pageSize
+          searchData.value.size = newValue.pageSize
+        }
+      },
+      {
+        deep: true
+      }
+    )
     return {
       contentConfig,
       searchConfigComputed,
@@ -127,7 +140,9 @@ export default defineComponent({
       regionDataPlus,
       handleChange,
       selectedOptions,
-      otherInfos
+      otherInfos,
+      pageContentRef,
+      searchData
     }
   }
 })

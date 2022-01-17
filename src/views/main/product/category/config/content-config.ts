@@ -24,7 +24,7 @@ export const contentConfig: ITable = {
       slotName: 'todo'
     }
   ],
-  pagination: true,
+  pagination: false,
   handleSlot: ['handle'],
   title: '行业类型'
 }

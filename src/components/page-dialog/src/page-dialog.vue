@@ -44,6 +44,10 @@ export default defineComponent({
       type: Object,
       default: () => ({})
     },
+    searchData: {
+      type: Object,
+      default: () => ({})
+    },
     pageName: {
       type: String,
       required: true
@@ -70,16 +74,20 @@ export default defineComponent({
           //编辑
           // console.log('编辑：', { ...formData.value, ...props.otherInfo })
           // console.log(props.infoInit.id)
+          // console.log('page-dialog:', props.otherInfo)
+          console.log({ ...formData.value })
           store.dispatch('system/editDataAction', {
             pageName: props.pageName,
             editInfo: { ...formData.value, ...props.otherInfo },
+            searchData: { ...props.searchData },
             id: props.infoInit.id
           })
         } else {
           //新建
           store.dispatch('system/createDataAction', {
             pageName: props.pageName,
-            newData: { ...formData.value, ...props.otherInfo }
+            newData: { ...formData.value },
+            searchData: { ...props.searchData }
           })
           // console.log({ ...formData.value, ...props.otherInfo })
         }

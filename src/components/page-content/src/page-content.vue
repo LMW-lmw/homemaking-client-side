@@ -80,7 +80,8 @@ import {
   PropType,
   ref,
   watch,
-  onUnmounted
+  onUnmounted,
+  onMounted
 } from 'vue'
 import { useStore } from '@/store/index'
 
@@ -104,7 +105,7 @@ export default defineComponent({
   components: {
     lmwTable
   },
-  emits: ['editBtnClick'],
+  emits: ['editBtnClick', 'update'],
   setup(props, { emit }) {
     const store = useStore()
     const propsPageName = props.pageName.toLowerCase()
@@ -113,15 +114,24 @@ export default defineComponent({
     const isDelete = usePermission(propsPageName, 'delete')
     const isQuery = usePermission(propsPageName, 'query')
     let delDialog = ref(false)
-    let searchData = ''
+    let searchDatas = ''
     let paginationInfo = ref({
       pageCurrent: 0,
       pageSize: 10
     })
     watch(
       paginationInfo,
-      () => {
-        send()
+      (newValue) => {
+        if (searchDatas) {
+          // console.log('newValue: ', newValue)
+          // console.log('有选择：', searchData)
+          paginationInfo.value.pageCurrent = newValue.pageCurrent
+          paginationInfo.value.pageSize = newValue.pageSize
+          // console.log(paginationInfo.value)
+          send(searchDatas)
+        } else {
+          send()
+        }
       },
       {
         deep: true
@@ -129,20 +139,32 @@ export default defineComponent({
     )
     const send = (searchInfo?: any) => {
       if (!isQuery) return
+
+      let offset =
+        paginationInfo.value.pageCurrent * paginationInfo.value.pageSize
+      let size = paginationInfo.value.pageSize
       store.dispatch('system/getList', {
         pageName: props.pageName,
         queryInfo: {
-          offset:
-            paginationInfo.value.pageCurrent * paginationInfo.value.pageSize,
-          size: paginationInfo.value.pageSize,
-          ...searchInfo
+          // offset:
+          //   paginationInfo.value.pageCurrent * paginationInfo.value.pageSize,
+          // size: paginationInfo.value.pageSize,
+          ...searchInfo,
+          offset,
+          size
         }
       })
     }
-    send()
+    onMounted(() => {
+      send()
+    })
+
     emitter.on(`search${props.pageName}Info`, (formData) => {
-      searchData = formData
-      send(formData)
+      searchDatas = formData
+      send(searchDatas)
+      // if (formData.isReset) {
+      //   paginationInfo
+      // }
     })
     onUnmounted(() => {
       emitter.off(`search${props.pageName}Info`, () => {
@@ -174,13 +196,20 @@ export default defineComponent({
       store.dispatch('system/deletDataAction', {
         id: delData.value.id,
         pageName: props.pageName,
-        searchData
+        searchData: {
+          searchDatas,
+          offset:
+            paginationInfo.value.pageCurrent * paginationInfo.value.pageSize,
+          size: paginationInfo.value.pageSize
+        }
       })
     }
     const editCLick = (item: any) => {
       // console.log('pagecontent', item)
       emit('editBtnClick', item)
     }
+    emit('update', isUpdate)
+
     return {
       dataList,
       listCount,

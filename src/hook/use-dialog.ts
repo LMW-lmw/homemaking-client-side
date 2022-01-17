@@ -17,6 +17,7 @@ export function useDialog(addCallBack?: callBack, editCallback?: callBack) {
   }
   const editBtnClick = (item: any) => {
     infoInit.value = { ...item }
+    console.log(infoInit.value)
     if (dialogRef.value) {
       dialogRef.value.title = '编辑'
       dialogRef.value.dialogVisible = true

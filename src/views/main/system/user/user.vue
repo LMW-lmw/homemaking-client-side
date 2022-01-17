@@ -8,6 +8,8 @@
       :contentConfig="contentConfig"
       pageName="Users"
       @editBtnClick="editBtnClick"
+      @update="update"
+      ref="pageContentRef"
     >
       <template #status="data">
         <el-button
@@ -15,41 +17,30 @@
           plain
           :type="data.back.enable === 1 ? 'success' : 'danger'"
           @click="changeUserEnable(data.back)"
+          v-if="isUpdate"
         >
           {{ data.back.enable ? '启用' : '禁用' }}
         </el-button>
+        <span v-else>
+          {{ data.back.enable ? '启用' : '禁用' }}
+        </span>
       </template>
       <template #handle>
         <el-button type="primary" @click="addClick">添加用户</el-button>
       </template>
-      <!-- <template #department="data">
-        <span>
-          {{
-            $store.state.department.find(
-              (item) => item.id === data.back.departmentId
-            )?.name
-          }}
-        </span>
-      </template> -->
-      <!-- <template #role="data">
-        <span>
-          {{
-            $store.state.role.find((item) => item.id === data.back.roleId)?.name
-          }}
-        </span>
-      </template> -->
     </page-content>
     <page-dialog
       :dialogConfig="dialogConfigComputed"
       ref="dialogRef"
       :infoInit="infoInit"
       pageName="Users"
+      :searchData="searchData"
     ></page-dialog>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, computed } from 'vue'
+import { defineComponent, computed, ref, watch } from 'vue'
 
 import pageSearch from '@/components/page-search'
 import pageContent from '@/components/page-content'
@@ -65,14 +56,28 @@ import emitter from '@/utils/mitt'
 export default defineComponent({
   name: 'user',
   components: { pageSearch, pageContent, pageDialog },
-
   setup() {
     const store = useStore()
     // 输入框的信息
-    let searchData: any = ''
+    let searchData: any = ref({})
+    let pageContentRef = ref<InstanceType<typeof pageContent>>()
     emitter.on(`searchUsersInfo`, (formData) => {
-      searchData = formData
+      // console.log('user: ', formData)
+      searchData.value = formData
+      console.log('user: ', searchData.value)
     })
+    watch(
+      () => pageContentRef.value?.paginationInfo,
+      (newValue: any) => {
+        if (newValue) {
+          searchData.value.offset = newValue.pageCurrent * newValue.pageSize
+          searchData.value.size = newValue.pageSize
+        }
+      },
+      {
+        deep: true
+      }
+    )
     //控制添加和编辑框password输入框显示和隐藏
     const addCallBack = () => {
       const passwordItem = dialogConfig.formItems.find(
@@ -118,7 +123,6 @@ export default defineComponent({
     // 修改用户状态
     const changeUserEnable = (data: any) => {
       let info = { ...data }
-      console.log(info)
       const { cellphone, enable, name, realname, roleId, departmentId } = info
       const editInfo = {
         cellphone,
@@ -135,7 +139,7 @@ export default defineComponent({
           pageName: 'Users',
           editInfo: editInfo,
           id,
-          searchData
+          searchData: searchData.value
         })
       } else {
         editInfo.enable = 1
@@ -143,7 +147,7 @@ export default defineComponent({
           pageName: 'Users',
           editInfo: editInfo,
           id,
-          searchData
+          searchData: searchData.value
         })
       }
     }
@@ -158,6 +162,11 @@ export default defineComponent({
       }
       return formConfig
     })
+
+    let isUpdate = ref()
+    let update = (value: any) => {
+      isUpdate.value = value
+    }
     return {
       formConfig,
       contentConfig,
@@ -167,7 +176,11 @@ export default defineComponent({
       dialogRef,
       infoInit,
       changeUserEnable,
-      searchConfigComputed
+      searchConfigComputed,
+      isUpdate,
+      update,
+      searchData,
+      pageContentRef
     }
   }
 })

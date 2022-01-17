@@ -77,7 +77,7 @@ const systemModule: Module<ISystem, IRootState> = {
       // 获取数据
       const pageName = payload.pageName
       const url = `${pageName.toLowerCase()}/list`
-      const pageData = await getPageListData(url, payload.queryInfo)
+      const pageData = await getPageListData(url, { ...payload.queryInfo })
       const { list, totalCount } = pageData
       commit(`change${pageName}List`, list)
       if (pageName !== 'Menu') {
@@ -115,11 +115,10 @@ const systemModule: Module<ISystem, IRootState> = {
     },
     async createDataAction(context, payload: any) {
       // 添加数据
-      const { pageName, newData } = payload
+      const { pageName, newData, searchData } = payload
       const url = `/${pageName.toLowerCase()}`
       const data = await createData(url, newData)
       if (data) {
-        // console.log(data)
         if (data.response) {
           ElMessage.error({
             message: '添加失败',
@@ -139,14 +138,14 @@ const systemModule: Module<ISystem, IRootState> = {
       context.dispatch('getList', {
         pageName,
         queryInfo: {
-          offset: 0,
-          size: 10
+          ...searchData
         }
       })
     },
     async editDataAction(context, payload: any) {
       // 编辑数据
       const { pageName, editInfo, id, searchData } = payload
+      console.log(payload)
       const url = `/${pageName.toLowerCase()}/${id}`
       const data = await editData(url, editInfo)
       if (data) {
@@ -169,8 +168,6 @@ const systemModule: Module<ISystem, IRootState> = {
       context.dispatch('getList', {
         pageName,
         queryInfo: {
-          offset: 0,
-          size: 10,
           ...searchData
         }
       })

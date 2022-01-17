@@ -27,5 +27,5 @@ export const contentConfig: ITable = {
   // showChoose: true,
   pagination: false,
   handleSlot: ['handle'],
-  title: '用户管理'
+  title: '角色管理'
 }
