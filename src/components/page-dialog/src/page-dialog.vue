@@ -86,7 +86,7 @@ export default defineComponent({
           //新建
           store.dispatch('system/createDataAction', {
             pageName: props.pageName,
-            newData: { ...formData.value },
+            newData: { ...formData.value, ...props.otherInfo },
             searchData: { ...props.searchData }
           })
           // console.log({ ...formData.value, ...props.otherInfo })

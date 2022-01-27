@@ -150,8 +150,9 @@ const systemModule: Module<ISystem, IRootState> = {
       const data = await editData(url, editInfo)
       if (data) {
         if (data.response) {
+          console.log(data.response)
           ElMessage.error({
-            message: '修改失败',
+            message: data.response.data.data ?? '修改失败',
             type: 'error',
             showClose: true,
             duration: 2000

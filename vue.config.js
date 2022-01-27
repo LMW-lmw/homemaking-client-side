@@ -6,17 +6,17 @@ const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
 module.exports = {
   outputDir: './build',
   devServer: {
-    hot: true, //自动保存
-    proxy: {
-      // 配置跨域
-      '^/api': {
-        target: 'http://localhost:3000/',
-        pathRewrite: {
-          '^/api': ''
-        },
-        changeOrigin: true
-      }
-    }
+    hot: true //自动保存
+    // proxy: {
+    //   // 配置跨域
+    //   '^/api': {
+    //     target: 'http://localhost:3000/',
+    //     pathRewrite: {
+    //       '^/api': ''
+    //     },
+    //     changeOrigin: true
+    //   }
+    // }
   },
   configureWebpack: (config) => {
     if (process.env.NODE_ENV === 'production') {
