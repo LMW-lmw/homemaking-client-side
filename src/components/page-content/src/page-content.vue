@@ -139,16 +139,12 @@ export default defineComponent({
     )
     const send = (searchInfo?: any) => {
       if (!isQuery) return
-
       let offset =
         paginationInfo.value.pageCurrent * paginationInfo.value.pageSize
       let size = paginationInfo.value.pageSize
       store.dispatch('system/getList', {
         pageName: props.pageName,
         queryInfo: {
-          // offset:
-          //   paginationInfo.value.pageCurrent * paginationInfo.value.pageSize,
-          // size: paginationInfo.value.pageSize,
           ...searchInfo,
           offset,
           size

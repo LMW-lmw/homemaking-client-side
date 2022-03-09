@@ -112,10 +112,14 @@ export default defineComponent({
     }
     const handleCurrentChange = (pageCurrent: number) => {
       pageCurrent = pageCurrent - 1
-      console.log('table:', { ...props.paginationInfo, pageCurrent })
-      emit('update:paginationInfo', { ...props.paginationInfo, pageCurrent })
+      setTimeout(() => {
+        // 让CurrentChange比sizeChange后执行
+        console.log('time')
+        emit('update:paginationInfo', { ...props.paginationInfo, pageCurrent })
+      }, 0)
     }
     const handleSizeChange = (pageSize: number) => {
+      console.log('no time')
       emit('update:paginationInfo', { ...props.paginationInfo, pageSize })
     }
     return { selectionChange, handleCurrentChange, handleSizeChange }

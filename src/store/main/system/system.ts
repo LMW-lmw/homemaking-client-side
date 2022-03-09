@@ -77,8 +77,13 @@ const systemModule: Module<ISystem, IRootState> = {
       // 获取数据
       const pageName = payload.pageName
       const url = `${pageName.toLowerCase()}/list`
+
+      // console.log(payload.queryInfo)
       const pageData = await getPageListData(url, { ...payload.queryInfo })
       const { list, totalCount } = pageData
+      // if (totalCount && !list.length) {
+      //   return
+      // }
       commit(`change${pageName}List`, list)
       if (pageName !== 'Menu') {
         commit(`change${pageName}Count`, totalCount)

@@ -1,5 +1,5 @@
 const BASE_URL = 'http://120.27.144.169:3000/'
-// const BASE_URL = 'http://192.168.1.109:3000/'
+// const BASE_URL = 'http://localhost:3000/'
 const TIME_OUT = 10000
 // if (process.env.NODE_ENV === 'development') {
 //   BASE_URL = '/api'

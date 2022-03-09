@@ -14,7 +14,6 @@
           <el-col v-bind="collLayout">
             <el-form-item
               :label="item.label"
-              :rules="item.rules"
               :style="itemStyle"
               v-show="!item.isHidden"
               class="form-item"
