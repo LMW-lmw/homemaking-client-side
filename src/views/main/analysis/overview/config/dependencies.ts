@@ -36,8 +36,8 @@ export const dependencies: DescriptionProp[] = [
   },
 
   {
-    name: '@vueuse/core',
-    description: '^4.9.1'
+    name: 'normalize.css',
+    description: '^8.0.1'
   },
   {
     name: 'dayjs',

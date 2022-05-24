@@ -11,7 +11,7 @@ export const technologyStacks = [
 
   {
     title: '构建工具',
-    desp: 'Vite 2.x / Webpack5.x'
+    desp: 'Webpack5.x'
   },
 
   {
@@ -46,12 +46,12 @@ export const technologyStacks = [
 
   {
     title: '工具库',
-    desp: ' @vueuse/core + dayjs + countup.js'
+    desp: 'dayjs'
   },
 
   {
     title: 'CSS 预编译',
-    desp: 'Sass / Less'
+    desp: 'Less'
   },
 
   {
@@ -72,10 +72,5 @@ export const technologyStacks = [
   {
     title: '提交规范',
     desp: 'Commitizen + Commitlint'
-  },
-
-  {
-    title: '自动部署',
-    desp: 'Centos + Jenkins + Nginx'
   }
 ]

@@ -19,11 +19,11 @@
         :table-datas="devDependencies"
       />
     </lmw-card>
-    <lmw-card title="项目结构">
+    <!-- <lmw-card title="项目结构">
       <div class="code-left">
         <lmw-code :code="projectDir" language="bash"></lmw-code>
       </div>
-    </lmw-card>
+    </lmw-card> -->
     <lmw-card title="项目规范">
       <lmw-descriptions
         title="文件命名规范"
@@ -92,7 +92,7 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue'
-import lmwCode from '@/base-component/code'
+// import lmwCode from '@/base-component/code'
 import lmwCard from '@/base-component/card'
 import lmwTextLink from '@/base-component/text-link'
 import lmwDescriptions from '@/base-component/descriptions'
@@ -108,7 +108,7 @@ export default defineComponent({
   name: 'overview',
   components: {
     lmwCard,
-    lmwCode,
+    // lmwCode,
     lmwDescriptions,
     lmwTextLink
   },
