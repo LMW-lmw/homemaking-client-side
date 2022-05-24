@@ -10,7 +10,7 @@ module.exports = {
     // proxy: {
     //   // 配置跨域
     //   '^/api': {
-    //     target: 'http://localhost:3000/',
+    //     target: 'http://localhost:8888/',
     //     pathRewrite: {
     //       '^/api': ''
     //     },

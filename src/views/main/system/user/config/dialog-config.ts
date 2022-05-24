@@ -57,7 +57,7 @@ export const dialogConfig: IForm = {
       field: 'password',
       type: 'password',
       label: '密码',
-      placeholder: '请输入密码(默认密码为0)',
+      placeholder: '请输入密码(默认密码为666)',
       isHidden: true
     },
     {

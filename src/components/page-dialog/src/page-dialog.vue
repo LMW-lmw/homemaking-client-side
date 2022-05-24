@@ -74,7 +74,7 @@ export default defineComponent({
           //编辑
           // console.log('编辑：', { ...formData.value, ...props.otherInfo })
           // console.log(props.infoInit.id)
-          // console.log('page-dialog:', props.otherInfo)
+          console.log('page-dialog:', props.otherInfo)
           console.log({ ...formData.value })
           store.dispatch('system/editDataAction', {
             pageName: props.pageName,

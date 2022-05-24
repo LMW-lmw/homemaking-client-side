@@ -46,10 +46,37 @@ const store = createStore<IRootState>({
         size: 100
       })
       const menuResult = await getPageListData('/menu/list', {})
+
       const { list: menuList } = menuResult
       const { list: departmentList } = department
       const { list: roleList } = role
       const { list: categoryList } = category
+
+      // const res: any = await Promise.all([
+      //   getPageListData('/role/list', {
+      //     offset: 0,
+      //     size: 100
+      //   }),
+      //   getPageListData('/category/list', {
+      //     offset: 0,
+      //     size: 100
+      //   }),
+      //   getPageListData('/menu/list', {}),
+      //   getPageListData('/department/list', {
+      //     offset: 0,
+      //     size: 100
+      //   })
+      // ])
+      // if (res[0]?.response?.status) {
+      //   if (res[0].response.status === 401) {
+      //     ElMessage.error('token失效')
+      //   }
+      // }
+      // const { list: roleList } = res[0]
+      // const { list: categoryList } = res[1]
+      // const { list: menuList } = res[2]
+      // const { list: departmentList } = res[3]
+
       commit('changeDepartment', departmentList)
       commit('changeRole', roleList)
       commit('changeMenu', menuList)

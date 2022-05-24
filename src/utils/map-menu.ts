@@ -68,6 +68,7 @@ export function mapMenuPermission(userMenus: any[]): any[] {
 // 取出根菜单的叶子节点
 export function checkMenus(menuList: any[]): number[] {
   const list: number[] = []
+  console.log(menuList)
   const recursionMenu = (menus: any[]) => {
     for (const item of menus) {
       if (item.children && item.children?.length != 0) {

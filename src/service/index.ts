@@ -3,6 +3,9 @@ import LmwAxios from './request/index'
 import storage from '@/utils/storage'
 import { ElMessage } from 'element-plus'
 import router from '@/router'
+import { throttle } from '@/utils/throttle'
+
+const throttleAlertMessage = throttle(ElMessage.error)
 const LmwRequest = new LmwAxios({
   baseURL: BASE_URL,
   timeout: TIME_OUT,
@@ -17,21 +20,34 @@ const LmwRequest = new LmwAxios({
       return config
     },
     requestInterceptorCatch: (error) => {
-      // if (error.status == 401) {
-      //   console.log('身份验证失败')
-      // }
       return error
     },
     responseInterceptor: (res) => {
       return res.data.data
     },
     responseInterceptorCatch: (error) => {
-      console.log(error.response)
       const status: number = error.response.status
-      if (status === 401) {
-        ElMessage.error('请重新登录')
-        storage.clear()
-        router.push('/login')
+      const data = error.response.data.data
+      switch (status) {
+        case 401:
+          throttleAlertMessage(data)
+          storage.clear()
+          router.push('/login')
+          break
+        case 400:
+          throttleAlertMessage(data)
+          break
+        case 409:
+          throttleAlertMessage(data)
+          break
+        case 404:
+          throttleAlertMessage(data)
+          break
+        case 405:
+          throttleAlertMessage(data)
+          break
+        default:
+          throttleAlertMessage(data)
       }
       return error
     }

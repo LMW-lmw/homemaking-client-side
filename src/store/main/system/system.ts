@@ -101,14 +101,7 @@ const systemModule: Module<ISystem, IRootState> = {
       })
       if (data) {
         // console.log(data)
-        if (data.response) {
-          ElMessage.error({
-            message: '删除失败',
-            type: 'error',
-            showClose: true,
-            duration: 2000
-          })
-        } else {
+        if (!data.response) {
           ElMessage.success({
             message: '删除成功',
             type: 'success',
@@ -124,14 +117,7 @@ const systemModule: Module<ISystem, IRootState> = {
       const url = `/${pageName.toLowerCase()}`
       const data = await createData(url, newData)
       if (data) {
-        if (data.response) {
-          ElMessage.error({
-            message: '添加失败',
-            type: 'error',
-            showClose: true,
-            duration: 2000
-          })
-        } else {
+        if (!data.response) {
           ElMessage.success({
             message: '添加成功',
             type: 'success',
@@ -154,15 +140,7 @@ const systemModule: Module<ISystem, IRootState> = {
       const url = `/${pageName.toLowerCase()}/${id}`
       const data = await editData(url, editInfo)
       if (data) {
-        if (data.response) {
-          console.log(data.response)
-          ElMessage.error({
-            message: data.response.data.data ?? '修改失败',
-            type: 'error',
-            showClose: true,
-            duration: 2000
-          })
-        } else {
+        if (!data.response) {
           ElMessage.success({
             message: '修改成功',
             type: 'success',

@@ -53,11 +53,16 @@ export default defineComponent({
     const store = useStore()
     const treeRef = ref<InstanceType<typeof ElTree>>()
     const menuList = computed(() => store.state.menu)
+    const roleInfo = ref<any>({
+      menuList: []
+    })
     const editCallBack = (item: any) => {
       const key = checkMenus(item.menuList)
-      console.log(key)
+      for (let i in item.menuList) {
+        key.push(item.menuList[i].id)
+      }
       roleInfo.value.menuList = key
-      // console.log(key)
+      console.log(roleInfo.value.menuList)
       nextTick(() => {
         treeRef.value?.setCheckedKeys(key, false)
       })
@@ -66,9 +71,7 @@ export default defineComponent({
       undefined,
       editCallBack
     )
-    const roleInfo = ref<any>({
-      menuList: []
-    })
+
     const roleCheck = (allMenu?: any, checkMenu?: any) => {
       const checkedKeys = checkMenu.checkedKeys
       const halfCheckedKeys = checkMenu.halfCheckedKeys

@@ -17,7 +17,6 @@
             />
             <span data-placeholder="Username"></span>
           </div>
-
           <div class="inputText" id="password">
             <input
               type="password"

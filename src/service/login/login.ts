@@ -18,29 +18,7 @@ export function getUserInfo(id: number) {
 }
 
 export function getMenus(id: number) {
-  console.log(id)
   return send.get<any>({
     url: LoginApi.UserMenus + id + '/menu'
-    // interceptors: {
-    //   responseInterceptor: (data) => {
-    //     if (data) {
-    //       data.map((item: any) => {
-    //         if (item.id == 38) {
-    //           item.icon = 'icon-xitong1'
-    //         }
-    //         if (item.id == 1) {
-    //           item.icon = 'icon-a-shezhi'
-    //         }
-    //         if (item.id == 9) {
-    //           item.icon = 'icon-shangpin'
-    //         }
-    //         if (item.id == 41) {
-    //           item.icon = 'icon-icon-say'
-    //         }
-    //       })
-    //     }
-    //     return data
-    //   }
-    // }
   })
 }

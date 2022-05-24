@@ -46,9 +46,6 @@ class LmwAxios {
       },
       (error) => {
         this.loading?.close()
-        if (error.response.status === 404) {
-          console.log('404的错误~')
-        }
         return error
       }
     )
