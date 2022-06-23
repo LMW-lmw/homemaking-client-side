@@ -8,7 +8,8 @@
     "lint": "vue-cli-service lint",
     "prettier": "prettier --write .",
     "prepare": "husky install",
-    "commit": "cz"
+    "commit": "cz",
+    "report": "vue-cli-service build --report"
   },
   "dependencies": {
     "axios": "^0.21.1",

@@ -52,6 +52,7 @@ class LmwAxios {
   }
   request<T = any>(config: LmwRequestConfig<T>): Promise<T> {
     return new Promise((resolve, reject) => {
+      // 单个请求拦截
       if (config.interceptors?.requestInterceptor) {
         config = config.interceptors.requestInterceptor(config)
       }
@@ -61,6 +62,7 @@ class LmwAxios {
       this.instance
         .request<any, T>(config)
         .then((res) => {
+          // 单个响应拦截
           if (config.interceptors?.responseInterceptor) {
             res = config.interceptors.responseInterceptor(res)
           }

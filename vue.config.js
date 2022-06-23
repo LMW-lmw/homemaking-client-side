@@ -34,33 +34,14 @@ module.exports = {
           parallel: true //使用多进程并行运行来提高构建速度。默认并发运行数：os.cpus().length - 1。
         })
       )
+      let externals = {
+        vue: 'Vue',
+        vuex: 'Vuex',
+        'vue-router': 'VueRouter',
+        axios: 'axios',
+        dayjs: 'dayjs'
+      }
+      config.externals = externals
     }
   }
-  // configureWebpack: {
-  //   resolve: {
-  //     alias: {
-  //       components: '@/components'
-  //     }
-  //   }
-  // }
-  // chainWebpack: (config) => {
-  //   config.resolve.alias
-  //     .set('@', resolve('./src'))
-  //     .set('components', resolve('./src/components'))
-  //     .set('assets', resolve('./src/assets'))
-  //     .set('commonjs', resolve('./src/commonjs'))
-  //     .set('network', resolve('./src/network'))
-  //     .set('views', resolve('./src/views'))
-  //   //set第一个参数：设置的别名，第二个参数：设置的路径
-  // }
-  // configureWebpack: (config) => {
-  //   config.resolve.alias = {
-  //     '@': path.resolve(__dirname, 'src')
-  //   }
-  // }
-  // chainWebpack: (config) => {
-  //   config.resolve.alias
-  //     .set('@', path.resolve(__dirname, 'src'))
-  //     .set('views', '@/views')
-  // }
 }
